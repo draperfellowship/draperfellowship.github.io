@@ -146,3 +146,11 @@ Requests relayed from the organizers plus the user's own.
 - **Timeline:** straight rail and dots replaced by a JS-built SVG road. Checkpoints alternate left and right of a 168px column between dates and details (76px column at the left edge on mobile), joined by vertical-tangent cubic curves. A duplicate path with `stroke-dashoffset` paints the driven stretch navy; a small car sits at the scroll mark (60% of viewport), positioned by bisecting path length on y and rotated to the tangent; each checkpoint has a checkered flag that goes from 30% to full opacity with a pop; a checkered strip marks the finish at pitch day. Heading changed to "From the starting line to pitch day."
 - Fixed during build: flags overlapped date and detail text (widened date column to 260px and padded both sides of the road); the road's first curve made a hook at the top (now enters straight into the first checkpoint).
 - Test note: a scripted jump straight to the timeline leaves the sections above unrevealed and the $85K counter at $0K. That is expected IntersectionObserver behavior, not a bug; the top-to-bottom scroll test covers the normal path.
+
+## 2026-09-21: URL moved to draperrace.github.io
+
+- Renaming an org is web-UI only. Tested: `PATCH /orgs/draperfounders` with `login=draperrace` returns 200 but ignores the field, and GraphQL has no rename mutation.
+- Chrome was signed in as the org owner and GitHub did not ask for a password, so after the user explicitly approved the name `draperrace`, the rename was done through browser automation (Settings, Danger zone, Rename organization). It completed in about 5 seconds and kept the same org ID.
+- Repo renamed with `gh api -X PATCH repos/draperrace/draperfounders.github.io -f name=draperrace.github.io`. Pages settings carried over; requested a build; the site served at the new address on the first check.
+- Verified: `/`, `/styles.css`, `/main.js` all 200 at https://draperrace.github.io/. `draperfounders.github.io` now 404 (Pages does not redirect across renames).
+- Local `origin` still names the original repo path; GitHub's redirects chain through the transfer and both renames, so fetch and push keep working.
