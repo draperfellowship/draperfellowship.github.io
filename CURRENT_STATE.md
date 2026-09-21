@@ -9,7 +9,7 @@ Single-page static site, live at https://draperfounders.github.io/ (repo: github
 
 ## What's in place
 - ✅ `docs/index.html`: hero, at-a-glance stats, program pillars, Tim Draper portfolio list, timeline, funding band, before-you-apply checklist.
-- ✅ `docs/styles.css`: warm paper + ink palette, one navy accent (`#142e5f`, with tint `#9dbaf1` on dark sections), Instrument Serif + Inter. Responsive (checked at 1280px and 390px).
+- ✅ `docs/styles.css`: warm paper + ink palette, one blue accent (`#2596be` everywhere; darker `#1a6884` only for small text on paper), Instrument Serif + Inter. Responsive (checked at 1280px and 390px).
 - ✅ `docs/main.js`: fade-up scroll reveals, count-up on $85K and prizes, timeline rail that fills on scroll with dots lighting up, portfolio marquee. Progressive enhancement: page is complete without JS. Respects `prefers-reduced-motion`.
 - ✅ Sticky nav with Apply always visible. All Apply CTAs scroll to the `#apply` checklist.
 - ✅ Deployment: GitHub Pages, $0.
