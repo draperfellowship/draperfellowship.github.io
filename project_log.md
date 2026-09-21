@@ -93,3 +93,10 @@ A stop hook directed me to finish with reasonable assumptions rather than wait o
 - Tested whether a GitHub organization can be created from the CLI. It cannot on github.com: `POST /admin/organizations` and `POST /user/orgs` both return 404, and the only GraphQL option is `createEnterpriseOrganization` (paid Enterprise accounts only). The user has to create the org in the web UI; the creation page was opened for them.
 - Plan once the org exists: move this repo with the transfer API (`POST repos/VXXWu/draper-founders-society/transfer` with `new_owner` and `new_name=<org>.github.io`), then re-enable Pages from `main` `/docs`. A transfer involves no push and keeps history. Side effect: the old `vxxwu.github.io/draper-founders-society` URL stops working, so do it only on the user's go-ahead.
 - **Workflow correction:** the user has a hook that blocks direct pushes to main ("Use feature branches"). It only triggered on 2026-09-21; the four earlier pushes in this log went straight to main because a bare `git push` does not match the hook's pattern. From this entry on, changes go through a feature branch and a merged PR.
+
+## 2026-09-21: Moved to draperfounders.github.io
+
+- User created the free `draperfounders` org (personal-account terms). Moved the repo with the transfer API: `POST repos/VXXWu/draper-founders-society/transfer` with `new_owner=draperfounders`, `new_name=draperfounders.github.io`. Completed in seconds; history, PR #1 and the Pages settings (`main` `/docs`) all carried over with no re-setup.
+- Verified: https://draperfounders.github.io/ serves the page, `styles.css` and `main.js` with HTTP 200. The old `vxxwu.github.io/draper-founders-society/` URL returns 404 (GitHub Pages does not redirect after a transfer).
+- Local `origin` still points at the old repo URL. GitHub redirects it, so fetch and push work. Repointing it is optional.
+- I first wrote a polling migration script for this. It was overkill for three API calls, the user said so, and it was deleted unused.
