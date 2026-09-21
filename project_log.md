@@ -111,3 +111,11 @@ All at the user's request, each shipped through a feature branch and a squash-me
 - Self-merging PRs: the user's hook feedback asked for pending work to be completed rather than left open, so requested changes are merged after the branch + PR step.
 
 **Still blocked, and only the org can unblock it:** the application form URL. It exists only with the program organizers, it is not in `website_content.md`, and a guessed or placeholder link on a live Apply button would be worse than none. It goes at the `APPLICATION LINK` comment in `docs/index.html`.
+
+## 2026-09-21: Accent changed from red to navy (PR #4)
+
+- User supplied a swatch; sampled value is `#142e5f`. Contrast is 11.8:1 on paper but only 1.4:1 on the ink sections, so a straight swap would have hidden the hero's italic phrase, the first-place prize and the Apply buttons in dark areas.
+- `:root --accent` is the exact navy. `.dark` overrides it with `#9dbaf1`, a tint at the same hue (219 degrees, 9.6:1 on ink), and sets `--on-accent` to ink so button text stays readable on the pale button.
+- Hover and the timeline dot halo now derive from `--accent` with `color-mix`, so there are no hard-coded accent colors left.
+- The attendance warning lost its red emphasis, so its weight went from 500 to 600.
+- Alternative not taken (more than was asked): make the dark sections navy instead of black.
