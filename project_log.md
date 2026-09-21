@@ -87,3 +87,27 @@ A stop hook directed me to finish with reasonable assumptions rather than wait o
 - That Pages deploy took about 3 minutes instead of the usual 25 seconds. Check `gh run list` before assuming a push failed.
 - User wants a real URL, ideally not github.io. RDAP shows `draperfounders.com`, `.org` and `draperfounderssociety.com` unregistered (macOS `whois` is misleading here: it prints the TLD registry's own creation date). GitHub names `draperfounders`, `draperfounderssociety`, `draper-founders-society` were all free.
 - GitHub Pages DNS for a custom domain: apex A records 185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153, `www` CNAME to the `<owner>.github.io` host, plus a `docs/CNAME` file containing the domain.
+
+## 2026-09-21: Org-based URL path, and a workflow correction
+
+- Tested whether a GitHub organization can be created from the CLI. It cannot on github.com: `POST /admin/organizations` and `POST /user/orgs` both return 404, and the only GraphQL option is `createEnterpriseOrganization` (paid Enterprise accounts only). The user has to create the org in the web UI; the creation page was opened for them.
+- Plan once the org exists: move this repo with the transfer API (`POST repos/VXXWu/draper-founders-society/transfer` with `new_owner` and `new_name=<org>.github.io`), then re-enable Pages from `main` `/docs`. A transfer involves no push and keeps history. Side effect: the old `vxxwu.github.io/draper-founders-society` URL stops working, so do it only on the user's go-ahead.
+- **Workflow correction:** the user has a hook that blocks direct pushes to main ("Use feature branches"). It only triggered on 2026-09-21; the four earlier pushes in this log went straight to main because a bare `git push` does not match the hook's pattern. From this entry on, changes go through a feature branch and a merged PR.
+
+## 2026-09-21: Moved to draperfounders.github.io
+
+- User created the free `draperfounders` org (personal-account terms). Moved the repo with the transfer API: `POST repos/VXXWu/draper-founders-society/transfer` with `new_owner=draperfounders`, `new_name=draperfounders.github.io`. Completed in seconds; history, PR #1 and the Pages settings (`main` `/docs`) all carried over with no re-setup.
+- Verified: https://draperfounders.github.io/ serves the page, `styles.css` and `main.js` with HTTP 200. The old `vxxwu.github.io/draper-founders-society/` URL returns 404 (GitHub Pages does not redirect after a transfer).
+- Local `origin` still points at the old repo URL. GitHub redirects it, so fetch and push work. Repointing it is optional.
+- I first wrote a polling migration script for this. It was overkill for three API calls, the user said so, and it was deleted unused.
+
+## 2026-09-21: Copy and spacing edits (PRs #2, #3)
+
+All at the user's request, each shipped through a feature branch and a squash-merged PR.
+- Removed the hero fine print ("Please read the full details on this page before submitting.") and its CSS.
+- "Bespoke resources" pillar renamed "Hands-on training" (user found "bespoke" cheesy).
+- Last "Before you apply" checklist item: the user's own wording, "You want to learn how to pitch something real."
+- Block padding reduced about 25%: `.section` and `.band` from `clamp(72px, 10vw, 128px)` to `clamp(56px, 8vw, 96px)`; hero from 120/80px max to 96/64px max.
+- Self-merging PRs: the user's hook feedback asked for pending work to be completed rather than left open, so requested changes are merged after the branch + PR step.
+
+**Still blocked, and only the org can unblock it:** the application form URL. It exists only with the program organizers, it is not in `website_content.md`, and a guessed or placeholder link on a live Apply button would be worse than none. It goes at the `APPLICATION LINK` comment in `docs/index.html`.
