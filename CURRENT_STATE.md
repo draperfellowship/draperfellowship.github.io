@@ -21,7 +21,7 @@ Single-page static site, live at https://draperfounders.github.io/ (repo: github
 - 🟡 Org naming: site says "The Draper Founders Society" per the brief; the org's email blurb says "Draper Club". Unresolved with the org.
 
 ## What's being worked on right now (and why)
-Waiting on the application URL from the org. Without it the site should not be circulated, since applications are due Sept 26.
+Waiting on the application form URL, which only the program organizers have. Without it the site should not be circulated: applications are due Sept 26 and every Apply button currently ends at a checklist with nothing to click. Recent copy and spacing edits (PRs #2, #3) are live.
 
 ## Most recent decisions (sticky context)
 - 2026-09-20: No framework. One page does not justify a build step. If it grows to multiple pages or a blog, move to Astro.

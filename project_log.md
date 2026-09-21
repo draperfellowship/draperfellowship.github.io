@@ -100,3 +100,14 @@ A stop hook directed me to finish with reasonable assumptions rather than wait o
 - Verified: https://draperfounders.github.io/ serves the page, `styles.css` and `main.js` with HTTP 200. The old `vxxwu.github.io/draper-founders-society/` URL returns 404 (GitHub Pages does not redirect after a transfer).
 - Local `origin` still points at the old repo URL. GitHub redirects it, so fetch and push work. Repointing it is optional.
 - I first wrote a polling migration script for this. It was overkill for three API calls, the user said so, and it was deleted unused.
+
+## 2026-09-21: Copy and spacing edits (PRs #2, #3)
+
+All at the user's request, each shipped through a feature branch and a squash-merged PR.
+- Removed the hero fine print ("Please read the full details on this page before submitting.") and its CSS.
+- "Bespoke resources" pillar renamed "Hands-on training" (user found "bespoke" cheesy).
+- Last "Before you apply" checklist item: the user's own wording, "You want to learn how to pitch something real."
+- Block padding reduced about 25%: `.section` and `.band` from `clamp(72px, 10vw, 128px)` to `clamp(56px, 8vw, 96px)`; hero from 120/80px max to 96/64px max.
+- Self-merging PRs: the user's hook feedback asked for pending work to be completed rather than left open, so requested changes are merged after the branch + PR step.
+
+**Still blocked, and only the org can unblock it:** the application form URL. It exists only with the program organizers, it is not in `website_content.md`, and a guessed or placeholder link on a live Apply button would be worse than none. It goes at the `APPLICATION LINK` comment in `docs/index.html`.
