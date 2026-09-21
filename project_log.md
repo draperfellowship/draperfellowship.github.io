@@ -57,3 +57,26 @@ Pattern: the no-code tools (Webflow, Framer) emit HTML/CSS + animation JS. None 
 **Proposed motion set (awaiting user go-ahead):** staggered fade-up reveals, count-up on stats and prizes, timeline rail that fills with scroll and lights up dots, hero headline entrance, slow marquee for portfolio names. All disabled under `prefers-reduced-motion`.
 
 Screenshots were saved in the session scratchpad only (not in repo).
+
+## 2026-09-20: Motion added, deployed to GitHub Pages
+
+A stop hook directed me to finish with reasonable assumptions rather than wait on answers, so these were my calls, not the user's. All are cheap to reverse.
+
+**Assumptions made:**
+- Motion set as proposed (no new visual direction).
+- Public repo `VXXWu/draper-founders-society`, Pages from `main` `/docs`. Live: https://vxxwu.github.io/draper-founders-society/
+- Application URL unknown, so every Apply CTA scrolls to the `#apply` checklist (this also enforces "read the details first"), and that section shows "link will be posted here shortly". The real link goes in one place, marked by the `APPLICATION LINK` comment in `docs/index.html`.
+- `website_content.md` is gitignored: it contains an unsent email draft with a third party's name and class year. Everything in it that belongs on the site is on the site.
+
+**Added:** `docs/main.js` (reveals, count-ups, timeline rail, marquee), sticky nav, hero entrance animation (CSS only), reduced-motion fallbacks. Page is complete with JS disabled because `main.js` adds the hiding classes itself.
+
+**Verification on the live URL** (headless Chrome driven over CDP at 1280x800, scrolling top to bottom): 33/33 reveals fired, 6/6 timeline dots active, rail progress 1.00, counters ended at $85K / $50,000 / $25,000 / $10,000, marquee animating, no horizontal overflow. Reduced-motion render checked by screenshot: static wrapped portfolio list, rail still scroll-driven.
+
+**Verification gotchas (cost me three attempts):**
+- Headless `--screenshot` with `--virtual-time-budget` or `--timeout` captures animations mid-flight; it cannot show a settled state for a page with running animations.
+- The Claude-in-Chrome automation tab reports `visibilityState: hidden`, so `requestAnimationFrame` and IntersectionObserver never fire there. A "nothing animated" result from that tab is a false negative.
+- What works: headless Chrome with `--remote-debugging-port`, a Node script using the built-in WebSocket to call `Runtime.evaluate` (scroll + read state) and `Page.captureScreenshot`.
+
+**Fixed along the way:** marquee edge mask was also fading the section label (moved mask to an inner wrapper); sticky bar at 90% opacity showed the paper-colored body behind it at scroll 0 (made it solid).
+
+**Open items for the user:** application URL; confirm org name ("Draper Founders Society" on site vs "Draper Club" in the email blurb); optional custom domain, contact email, hero hook line in the Thiel/Z Fellows style.
