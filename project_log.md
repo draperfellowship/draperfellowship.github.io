@@ -80,3 +80,10 @@ A stop hook directed me to finish with reasonable assumptions rather than wait o
 **Fixed along the way:** marquee edge mask was also fading the section label (moved mask to an inner wrapper); sticky bar at 90% opacity showed the paper-colored body behind it at scroll 0 (made it solid).
 
 **Open items for the user:** application URL; confirm org name ("Draper Founders Society" on site vs "Draper Club" in the email blurb); optional custom domain, contact email, hero hook line in the Thiel/Z Fellows style.
+
+## 2026-09-21: Placeholder removed, URL options
+
+- Removed the "application link will be posted here shortly" box at the user's request, plus its CSS rule and JS selector. `#apply` now ends at the checklist until the real link is added at the `APPLICATION LINK` comment.
+- That Pages deploy took about 3 minutes instead of the usual 25 seconds. Check `gh run list` before assuming a push failed.
+- User wants a real URL, ideally not github.io. RDAP shows `draperfounders.com`, `.org` and `draperfounderssociety.com` unregistered (macOS `whois` is misleading here: it prints the TLD registry's own creation date). GitHub names `draperfounders`, `draperfounderssociety`, `draper-founders-society` were all free.
+- GitHub Pages DNS for a custom domain: apex A records 185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153, `www` CNAME to the `<owner>.github.io` host, plus a `docs/CNAME` file containing the domain.

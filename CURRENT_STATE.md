@@ -1,6 +1,6 @@
 # Current State: Draper Founders Society website
 
-Updated: 2026-09-20
+Updated: 2026-09-21
 
 Companion docs: `project_log.md` (chronological history, decisions, research), `website_content.md` (content brief from the org; gitignored because it holds an unsent email draft).
 
@@ -15,8 +15,8 @@ Single-page static site, live at https://vxxwu.github.io/draper-founders-society
 - ✅ Deployment: GitHub Pages, $0.
 
 ## What's NOT in place
-- ❌ **Real application link.** The `#apply` section shows "link will be posted here shortly". One-line swap, marked with an `APPLICATION LINK` HTML comment in `docs/index.html`.
-- ❌ Custom domain (site is on a personal github.io subpath).
+- ❌ **Real application link.** Apply CTAs scroll to the `#apply` checklist, which currently has no button (placeholder box removed 2026-09-21 at user request). Add the link at the `APPLICATION LINK` HTML comment in `docs/index.html`.
+- ❌ Custom domain (site is on a personal github.io subpath). User wants a real URL. Options given: buy `draperfounders.com` (unregistered per RDAP on 2026-09-21) and point it at Pages; ask Draper University for a subdomain; or, at zero cost, a GitHub org named `draperfounders` so the URL becomes `draperfounders.github.io` (name was free on 2026-09-21; the user must create the org in the web UI).
 - ❌ Contact email, photos, logos, social preview image. None were in the brief.
 - 🟡 Org naming: site says "The Draper Founders Society" per the brief; the org's email blurb says "Draper Club". Unresolved with the org.
 
