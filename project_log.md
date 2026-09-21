@@ -87,3 +87,9 @@ A stop hook directed me to finish with reasonable assumptions rather than wait o
 - That Pages deploy took about 3 minutes instead of the usual 25 seconds. Check `gh run list` before assuming a push failed.
 - User wants a real URL, ideally not github.io. RDAP shows `draperfounders.com`, `.org` and `draperfounderssociety.com` unregistered (macOS `whois` is misleading here: it prints the TLD registry's own creation date). GitHub names `draperfounders`, `draperfounderssociety`, `draper-founders-society` were all free.
 - GitHub Pages DNS for a custom domain: apex A records 185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153, `www` CNAME to the `<owner>.github.io` host, plus a `docs/CNAME` file containing the domain.
+
+## 2026-09-21: Org-based URL path, and a workflow correction
+
+- Tested whether a GitHub organization can be created from the CLI. It cannot on github.com: `POST /admin/organizations` and `POST /user/orgs` both return 404, and the only GraphQL option is `createEnterpriseOrganization` (paid Enterprise accounts only). The user has to create the org in the web UI; the creation page was opened for them.
+- Plan once the org exists: move this repo with the transfer API (`POST repos/VXXWu/draper-founders-society/transfer` with `new_owner` and `new_name=<org>.github.io`), then re-enable Pages from `main` `/docs`. A transfer involves no push and keeps history. Side effect: the old `vxxwu.github.io/draper-founders-society` URL stops working, so do it only on the user's go-ahead.
+- **Workflow correction:** the user has a hook that blocks direct pushes to main ("Use feature branches"). It only triggered on 2026-09-21; the four earlier pushes in this log went straight to main because a bare `git push` does not match the hook's pattern. From this entry on, changes go through a feature branch and a merged PR.
