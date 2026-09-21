@@ -129,3 +129,8 @@ All at the user's request, each shipped through a feature branch and a squash-me
 ## 2026-09-21: Accent reverted to navy (PR #6)
 
 - After seeing `#2596be` live, the user asked to go back to the navy. `docs/styles.css` restored to its PR #4 state: `--accent: #142e5f` on paper, tint `#9dbaf1` and ink button labels on dark sections. The `--accent-text` variable from PR #5 is gone with it.
+
+## 2026-09-21: Footer line removed, spacing cut a further 20% (PR #7)
+
+- Removed the "Stanford, California · Fall 2026" footer item at the user's request. The footer now holds only the org name, so its flex row (which existed to space two items apart) was removed.
+- Block padding cut about 20% again: `.section` and `.band` to `clamp(44px, 6.4vw, 76px)`, hero to `clamp(38px, 6.4vw, 76px)` top and `clamp(32px, 4.8vw, 52px)` bottom. Cumulative: 128px to 76px max at desktop since the first version. Internal margins (heading to content) were left alone.
