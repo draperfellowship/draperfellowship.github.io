@@ -29,7 +29,7 @@ if (!reduceMotion) {
   // Fade-up reveals. Grid siblings are staggered; everything else reveals on its own.
   const staggered = '.stats div, .pillars article, .prizes div, .apply .checks li';
   const targets = document.querySelectorAll(
-    `main .eyebrow, main h2, .note, .portfolio, .timeline > li, .pending, ${staggered}`
+    `main .eyebrow, main h2, .note, .portfolio, .timeline > li, ${staggered}`
   );
 
   const revealer = new IntersectionObserver(entries => {
