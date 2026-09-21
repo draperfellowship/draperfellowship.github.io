@@ -125,3 +125,7 @@ All at the user's request, each shipped through a feature branch and a squash-me
 - The user gave the exact hex, `#2596be`; the earlier swatch image had sampled as navy `#142e5f`. Lesson: ask for or confirm the hex rather than sampling a screenshot, which can be color-shifted.
 - Contrast: 5.5:1 on ink, so the dark-section tint override from PR #4 was removed. Only 3.0:1 on paper, which is fine for graphics (rail, dots, checkmarks, separators) but not for small text, so `--accent-text: #1a6884` (same hue, 5.6:1 on paper) is used for the tag labels and the attendance warning. `.dark` maps `--accent-text` back to `--accent`.
 - Button labels use ink (5.5:1) rather than white (3.4:1).
+
+## 2026-09-21: Accent reverted to navy (PR #6)
+
+- After seeing `#2596be` live, the user asked to go back to the navy. `docs/styles.css` restored to its PR #4 state: `--accent: #142e5f` on paper, tint `#9dbaf1` and ink button labels on dark sections. The `--accent-text` variable from PR #5 is gone with it.
