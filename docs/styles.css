@@ -5,8 +5,8 @@
   --line: #ddd5c8;
   --accent: #142e5f;
   --on-accent: #fff;
-  --serif: "Instrument Serif", Georgia, serif;
-  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --sans: "Barlow", system-ui, -apple-system, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -22,8 +22,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-size: 1.125rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -51,15 +51,15 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 }
 
 h1, h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.98;
 }
 
-h1 { font-size: clamp(2.75rem, 7vw, 5.25rem); max-width: 16ch; }
+h1 { font-size: clamp(2.75rem, 7.2vw, 5.5rem); max-width: 17ch; }
 h1 em { color: var(--accent); }
-h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); max-width: 20ch; }
+h2 { font-size: clamp(2.125rem, 4.8vw, 3.5rem); max-width: 22ch; }
 h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 
 .eyebrow {
@@ -91,8 +91,12 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 }
 
 .wordmark {
-  font-family: var(--serif);
-  font-size: 1.375rem;
+  font-family: var(--display);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 1.5rem;
   text-decoration: none;
   line-height: 1.1;
 }
@@ -154,8 +158,8 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 
 .stats strong {
   display: block;
-  font-family: var(--serif);
-  font-weight: 400;
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(2.25rem, 4vw, 3.25rem);
   line-height: 1;
   margin-bottom: 10px;
@@ -181,7 +185,8 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 .note {
   max-width: 62ch;
   margin-top: 48px;
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 500;
   font-size: clamp(1.375rem, 2.4vw, 1.75rem);
   line-height: 1.35;
 }
@@ -191,7 +196,8 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 .portfolio ul { display: flex; flex-wrap: wrap; gap: 6px 0; }
 
 .portfolio li {
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(1.5rem, 3vw, 2.125rem);
   line-height: 1.3;
 }
@@ -201,60 +207,46 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
   margin-inline: 14px;
 }
 
-/* Timeline */
+/* Timeline: main.js draws a winding road between the date and detail columns */
 
-.timeline { position: relative; margin-top: 56px; padding-left: 48px; }
-
-/* Rail: ::before is the track, ::after is the fill driven by --p from main.js */
-.timeline::before,
-.timeline::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--line);
-}
-.timeline::after {
-  background: var(--accent);
-  transform-origin: top;
-  transform: scaleY(var(--p, 0));
-}
-
-.timeline > li:first-child { border-top: 1px solid var(--line); }
-
-.timeline > li::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  left: -48px;
-  top: 47px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--line);
-  border-radius: 50%;
-  background: var(--paper);
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline > li.is-active::before {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent);
-}
+.timeline-wrap { position: relative; margin-top: 48px; --road-x: 260px; --road-w: 168px; }
+.timeline { position: relative; }
 
 .timeline > li {
-  position: relative;
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 32px;
-  padding-block: 36px;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: var(--road-x) var(--road-w) 1fr;
+  padding-block: 28px;
 }
+.when { text-align: right; padding-right: 24px; }
+.what { grid-column: 3; padding-left: 24px; }
+
+.road {
+  position: absolute;
+  top: 0;
+  left: var(--road-x);
+  width: var(--road-w);
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.road path { fill: none; }
+.road-base { stroke: #cfc6b8; }
+.road-driven { stroke: var(--accent); }
+.road-dash { stroke: var(--paper); stroke-dasharray: 10 12; }
+
+.flag { opacity: 0.3; transition: opacity 0.3s ease; transform-box: fill-box; transform-origin: 50% 100%; }
+.flag.is-active { opacity: 1; }
+.flag line { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.flag rect { stroke: var(--ink); stroke-width: 1; }
+
+.car-body { fill: #fff; stroke: var(--ink); stroke-width: 1.5; }
+.car-stripe { fill: var(--accent); }
+.car-glass { fill: var(--ink); }
 
 .when .date {
   display: block;
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   line-height: 1.1;
 }
@@ -330,8 +322,8 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 }
 
 .prizes strong {
-  font-family: var(--serif);
-  font-weight: 400;
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1;
 }
@@ -372,9 +364,11 @@ footer {
 .marquee li:last-child::after { content: "\00b7"; color: var(--accent); margin-inline: 14px; }
 
 @keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes flag-pop { 50% { transform: scale(1.3); } }
 @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
 
 @media (prefers-reduced-motion: no-preference) {
+  .flag.is-active { animation: flag-pop 0.4s ease; }
   .hero > * { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
   .hero > :nth-child(2) { animation-delay: 0.08s; }
   .hero > :nth-child(3) { animation-delay: 0.2s; }
@@ -394,9 +388,10 @@ footer {
 
   .pillars { grid-template-columns: 1fr; gap: 32px; }
 
-  .timeline { padding-left: 36px; }
-  .timeline > li { grid-template-columns: 1fr; gap: 16px; padding-block: 28px; }
-  .timeline > li::before { left: -36px; top: 35px; }
+  .timeline-wrap { --road-x: 0px; --road-w: 76px; }
+  .timeline > li { display: block; padding: 22px 0 22px calc(var(--road-w) + 8px); }
+  .when { text-align: left; padding-right: 0; margin-bottom: 12px; }
+  .what { padding-left: 0; }
 
   .prizes { grid-template-columns: 1fr; }
   .prizes div { padding: 24px 0; }

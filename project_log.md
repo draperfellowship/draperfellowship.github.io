@@ -134,3 +134,15 @@ All at the user's request, each shipped through a feature branch and a squash-me
 
 - Removed the "Stanford, California · Fall 2026" footer item at the user's request. The footer now holds only the org name, so its flex row (which existed to space two items apart) was removed.
 - Block padding cut about 20% again: `.section` and `.band` to `clamp(44px, 6.4vw, 76px)`, hero to `clamp(38px, 6.4vw, 76px)` top and `clamp(32px, 4.8vw, 52px)` bottom. Cumulative: 128px to 76px max at desktop since the first version. Internal margins (heading to content) were left alone.
+
+## 2026-09-21: Rebrand to The Draper Race, road timeline, new fonts, application link (PR #8)
+
+Requests relayed from the organizers plus the user's own.
+- **Name:** "The Draper Founders Society" to "The Draper Race" in title, meta, wordmark, intro and footer.
+- **Headline:** "The only time starting a company will cost you almost nothing is right now." Intro paragraph replaced with the organizers' text verbatim (accelerator wording; no longer names Tim Draper in the intro). Meta descriptions changed from "training program" to "accelerator" to match.
+- **Date:** kickoff Oct 6 to Oct 7 everywhere (3 places). Oct 7 2026 is a Wednesday, so "Tuesday" became "Wednesday".
+- **Application link:** https://forms.gle/SGNK3WYaj53eyeUG7 (checked: resolves to a live Google Form). Added as the button in `#apply`.
+- **Fonts:** user found Instrument Serif + Inter "too claude-y". Now Barlow Condensed (700 uppercase headings, italic wordmark) + Barlow body. Barlow derives from California road signage, which suits the theme. Cream background and navy kept, since only fonts were asked for.
+- **Timeline:** straight rail and dots replaced by a JS-built SVG road. Checkpoints alternate left and right of a 168px column between dates and details (76px column at the left edge on mobile), joined by vertical-tangent cubic curves. A duplicate path with `stroke-dashoffset` paints the driven stretch navy; a small car sits at the scroll mark (60% of viewport), positioned by bisecting path length on y and rotated to the tangent; each checkpoint has a checkered flag that goes from 30% to full opacity with a pop; a checkered strip marks the finish at pitch day. Heading changed to "From the starting line to pitch day."
+- Fixed during build: flags overlapped date and detail text (widened date column to 260px and padded both sides of the road); the road's first curve made a hook at the top (now enters straight into the first checkpoint).
+- Test note: a scripted jump straight to the timeline leaves the sections above unrevealed and the $85K counter at $0K. That is expected IntersectionObserver behavior, not a bug; the top-to-bottom scroll test covers the normal path.

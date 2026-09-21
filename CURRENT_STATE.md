@@ -1,31 +1,29 @@
-# Current State: Draper Founders Society website
+# Current State: The Draper Race website (formerly Draper Founders Society)
 
 Updated: 2026-09-21
 
-Companion docs: `project_log.md` (chronological history, decisions, research), `website_content.md` (content brief from the org; gitignored because it holds an unsent email draft).
+Companion docs: `project_log.md` (chronological history, decisions, research), `website_content.md` (original content brief; gitignored because it holds an unsent email draft; now out of date on name, headline and the Oct 7 date).
 
 ## Where we are right now
-Single-page static site, live at https://draperfounders.github.io/ (repo: github.com/draperfounders/draperfounders.github.io, public, in the `draperfounders` org owned by VXXWu). Plain HTML + CSS + ~90 lines of vanilla JS, no framework, no build step. GitHub Pages serves the `docs/` folder of `main`; merging to `main` redeploys in about a minute (occasionally ~3). Direct pushes to main are blocked by a user hook: use a feature branch and a PR.
+Single-page static site for The Draper Race, a fall-quarter startup accelerator for Stanford students. Live at https://draperfounders.github.io/ (repo: github.com/draperfounders/draperfounders.github.io, public, org owned by VXXWu). Plain HTML + CSS + about 170 lines of vanilla JS, no framework, no build step. GitHub Pages serves `docs/` from `main`; a merge redeploys in 1 to 3 minutes. The application link is live, so the site is ready to circulate once the URL question below is settled.
 
 ## What's in place
-- ✅ `docs/index.html`: hero, at-a-glance stats, program pillars, Tim Draper portfolio list, timeline, funding band, before-you-apply checklist.
-- ✅ `docs/styles.css`: warm paper + ink palette, one navy accent (`#142e5f`, with tint `#9dbaf1` on dark sections), Instrument Serif + Inter. Responsive (checked at 1280px and 390px).
-- ✅ `docs/main.js`: fade-up scroll reveals, count-up on $85K and prizes, timeline rail that fills on scroll with dots lighting up, portfolio marquee. Progressive enhancement: page is complete without JS. Respects `prefers-reduced-motion`.
-- ✅ Sticky nav with Apply always visible. All Apply CTAs scroll to the `#apply` checklist.
-- ✅ Deployment: GitHub Pages, $0.
+- ✅ `docs/index.html`: hero, at-a-glance stats, program pillars, Tim Draper portfolio marquee, race-themed timeline, funding band, before-you-apply checklist with the Apply button (Google Form: https://forms.gle/SGNK3WYaj53eyeUG7).
+- ✅ `docs/styles.css`: cream paper + ink, navy accent `#142e5f` (tint `#9dbaf1` on dark sections). Fonts: Barlow Condensed (display, bold uppercase headings) + Barlow (body).
+- ✅ `docs/main.js`: timeline road (SVG built at runtime: winding road through one checkpoint per date, driven stretch painted navy, car that follows scroll, checkered flags that light up, finish line at pitch day), fade-up reveals, count-ups, marquee. Page is complete without JS; autonomous motion is off under `prefers-reduced-motion`.
+- ✅ Verified at 1280x900 and 390x800 by a scripted scroll (CDP): flags 0/6 to 6/6, road fully painted at bottom, no horizontal overflow.
 
 ## What's NOT in place
-- ❌ **Real application link.** Apply CTAs scroll to the `#apply` checklist, which currently has no button (placeholder box removed 2026-09-21 at user request). Add the link at the `APPLICATION LINK` HTML comment in `docs/index.html`.
-- 🟡 URL: moved off the personal subpath to `draperfounders.github.io` on 2026-09-21. A real domain is still optional: `draperfounders.com` was unregistered that day (about $10/yr); it needs a `docs/CNAME` file plus the DNS records listed in `project_log.md`. The old `vxxwu.github.io/draper-founders-society` URL now returns 404.
-- ❌ Contact email, photos, logos, social preview image. None were in the brief.
-- 🟡 Org naming: site says "The Draper Founders Society" per the brief; the org's email blurb says "Draper Club". Unresolved with the org.
+- 🟡 **URL still says "draperfounders".** Renaming needs no new org: the user renames the org in GitHub's web UI (Settings, Danger zone), then the repo gets renamed to `<neworg>.github.io` via `gh api -X PATCH`. `draperrace`, `thedraperrace` and `draper-race` were all free on 2026-09-21. The old URL stops working after the rename.
+- ❌ Custom domain, contact email, photos, social preview image.
 
 ## What's being worked on right now (and why)
-Waiting on the application form URL, which only the program organizers have. Without it the site should not be circulated: applications are due Sept 26 and every Apply button currently ends at a checklist with nothing to click. Recent copy and spacing edits (PRs #2, #3) are live.
+Waiting on the user to rename the GitHub org so the URL matches the new brand before the link is sent to applicants (applications due Sept 26).
 
 ## Most recent decisions (sticky context)
-- 2026-09-20: No framework. One page does not justify a build step. If it grows to multiple pages or a blog, move to Astro.
-- 2026-09-20: GitHub Pages over Cloudflare/Vercel/Netlify: already authenticated, no new account, no surprise-bill risk.
-- 2026-09-20: Motion via IntersectionObserver rather than CSS `animation-timeline`, because browser-support sources conflicted.
-- 2026-09-20: Site lives in `docs/` so Pages serves only the site, not repo-root notes.
-- 2026-09-20: Weekdays on dates were computed from the 2026 calendar, not given in the brief. "$85K" is derived from 50k + 25k + 10k.
+- 2026-09-21: Rebrand to "The Draper Race" at the organizers' request; new headline and intro copy are theirs verbatim. Kickoff moved Oct 6 to Oct 7, so the weekday label became Wednesday.
+- 2026-09-21: Timeline road sits between the date column and the detail column on desktop, and down the left edge on mobile. Alternating items left and right of a central road was rejected: with uneven item heights it adds a lot of vertical whitespace, which the user had just asked to reduce twice.
+- 2026-09-21: Road geometry is computed from the real checkpoint positions (`offsetTop`, not `getBoundingClientRect`, so reveal transforms do not skew it) and rebuilt by a ResizeObserver.
+- 2026-09-21: Nav and hero Apply buttons still scroll to the `#apply` checklist; only the button there opens the form.
+- 2026-09-21: Accent is navy `#142e5f`; a brighter `#2596be` was tried and reverted by the user.
+- 2026-09-20: No framework; GitHub Pages for $0 hosting. Direct pushes to main are blocked by a user hook: feature branch, PR, merge.
