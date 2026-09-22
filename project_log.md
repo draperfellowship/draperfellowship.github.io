@@ -188,3 +188,13 @@ Requests relayed from the organizers plus the user's own.
 - Org renamed `draperrace` to `draperfellowship` in the GitHub web UI via browser automation (user asked for the URL change explicitly), repo renamed to `draperfellowship.github.io` with `gh api -X PATCH`. Pages settings carried over; live on first check. `draperrace.github.io` now 404.
 - Last "Before you apply" item is now the user's wording: "You're passionate about entrepreneurship and want to learn how to pitch to VCs."
 - Pending: mailing-list email field in the welcome popup with submissions stored somewhere exportable. Static site, so the plan is a Google Form as the backend (responses land in a Sheet, CSV export) posted to from the page; waiting on the user to choose who creates the form.
+
+## 2026-09-22: Mailing list wired to a Google Form and Sheet (PR #15)
+
+- Created in the user's Google account via their signed-in Chrome (the user's stop hook asked for the work to be completed rather than deferred): Google Form "Draper Fellowship mailing list" with one Short-answer question "Email", published to anyone with the link, responses linked to the Sheet "Draper Fellowship mailing list (Responses)". Both are in the user's Drive root.
+  - Form editor: https://docs.google.com/forms/d/1n5X_iAofdhqzjYNOZzhjDNuXPM-Z55_9WIUSz7ppXIk/edit
+  - Sheet: https://docs.google.com/spreadsheets/d/1aVA62ooWLcIE7Hol309irNK_BORJnfPMK2ovRf9A74M/edit
+  - Public form ID `1FAIpQLSf-tnY-HEZsAlSO1pd43NrsyA0CG9No7Oa1sWK3fm_6iik1VA`, entry ID `2117742512` (both in `data-form` / `data-entry` on the `.signup` form in `index.html`).
+- The question's Required toggle did not take (the card re-laid out under my click). Not needed: the site validates the address before posting. The form's own title bar still reads "Untitled form" in Drive; the form heading is correct.
+- `main.js` posts `entry.<id>=<email>` to `.../formResponse` with `mode: 'no-cors'`, so the browser cannot read the result; the page treats a completed request as success. A test POST from curl returned 200 and appeared in the Sheet within seconds (row 2, `test-from-site-setup@example.com`; delete it when real signups begin).
+- Export: Sheet, File, Download, CSV.
