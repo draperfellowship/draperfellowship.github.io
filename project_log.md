@@ -217,3 +217,7 @@ Requests relayed from the organizers plus the user's own.
 ## 2026-09-22: Oct 7 kickoff time changed to 3 to 5 pm (PR #19)
 
 - Both occurrences (timeline entry and apply checklist) updated at the user's request.
+
+## 2026-09-22: Hero headline (PR #20)
+
+- New headline at the user's request: "Learn startups. Build something real. Pitch to Tim Draper." with "Tim Draper." in red. One sentence per line via `<br>`; the h1 max-width was removed since the breaks control the shape. Checked at 1280px and 390px.
