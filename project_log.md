@@ -213,3 +213,7 @@ Requests relayed from the organizers plus the user's own.
 ## 2026-09-22: Apply checklist no longer wraps (PR #18)
 
 - Removed `max-width: 60ch` from `.apply .checks`; the fourth item (the longest) now stays on one line at any desktop width down to 900px. It still wraps on phones, where nothing would fit on one line.
+
+## 2026-09-22: Oct 7 kickoff time changed to 3 to 5 pm (PR #19)
+
+- Both occurrences (timeline entry and apply checklist) updated at the user's request.
