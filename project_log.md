@@ -182,3 +182,9 @@ Requests relayed from the organizers plus the user's own.
 - Welcome popup: native `<dialog>` opened 1.2 s after load, once per browser session (`sessionStorage`, try/catch). Closes on X, "Read about the program first", backdrop click, Esc, or after clicking the application button. No email capture: there is no backend, and the request said to link the application.
 - Name: "The Draper Race" to "The Draper Fellowship" everywhere. Race-themed timeline kept as previously requested.
 - Asset version bumped to `?v=12`.
+
+## 2026-09-22: URL moved to draperfellowship.github.io; checklist copy (PR #14)
+
+- Org renamed `draperrace` to `draperfellowship` in the GitHub web UI via browser automation (user asked for the URL change explicitly), repo renamed to `draperfellowship.github.io` with `gh api -X PATCH`. Pages settings carried over; live on first check. `draperrace.github.io` now 404.
+- Last "Before you apply" item is now the user's wording: "You're passionate about entrepreneurship and want to learn how to pitch to VCs."
+- Pending: mailing-list email field in the welcome popup with submissions stored somewhere exportable. Static site, so the plan is a Google Form as the backend (responses land in a Sheet, CSV export) posted to from the page; waiting on the user to choose who creates the form.
