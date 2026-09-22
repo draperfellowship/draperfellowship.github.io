@@ -163,3 +163,9 @@ Requests relayed from the organizers plus the user's own.
 - Treatment: `filter: grayscale(1)` at 80% opacity, color on hover; per-logo heights so wide wordmarks (Tesla, SpaceX) and tall marks (Hotmail, Twitter bird) carry similar visual weight. Under reduced motion the list wraps; otherwise the existing marquee scrolls it.
 - Logos are third-party trademarks used nominatively ("known for his investments in"), the same way VC and accelerator sites list portfolio companies.
 - Wikimedia API returns empty bodies when hit rapidly with a generic UA; a descriptive User-Agent plus 1.5 s pauses fixed it.
+
+## 2026-09-22: Red CTA and tags, green optional tag (PR #11)
+
+- Proposed a wider "paddock" palette (red CTA and urgency tags, green checks and optional tag, gold/silver/bronze prizes, gold $85K and callout, navy pillar rules, red car stripe) on a local branch for review.
+- User kept three pieces and reverted the rest: Apply buttons red `#c4301c` with white text (5.6:1), Deadline/Required tags red, Optional tag green `#2e6b45` (new `.tag-go` class). Everything else stays navy/ink, including the attendance warning, checkmarks, prizes and car stripe.
+- `--on-accent` is now only used by nothing after `.btn` moved to `--red`; left in place since it is harmless and one line.
