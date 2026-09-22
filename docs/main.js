@@ -24,22 +24,17 @@ if (countdown) {
   const timer = setInterval(tick, 1000);
 }
 
-// Welcome popup. Dismissed: stays away for this browser session. Joined the list: stays away for good.
-// Both flags live only in this browser; nothing is sent anywhere.
+// Welcome popup: opens on every visit until the visitor joins the list (flag kept only in this browser).
 const welcome = document.querySelector('.welcome');
 if (welcome && typeof welcome.showModal === 'function') {
-  let seen = false;
-  try { seen = sessionStorage.getItem('welcomeSeen') === '1' || localStorage.getItem('joinedList') === '1'; } catch (e) {}
-  const close = () => {
-    welcome.close();
-    try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {}
-  };
+  let joined = false;
+  try { joined = localStorage.getItem('joinedList') === '1'; } catch (e) {}
+  const close = () => welcome.close();
   welcome.querySelector('.welcome-close').addEventListener('click', close);
   welcome.querySelector('.welcome-later').addEventListener('click', close);
   welcome.querySelector('a.btn').addEventListener('click', close);
   welcome.addEventListener('click', e => { if (e.target === welcome) close(); });
-  welcome.addEventListener('cancel', () => { try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {} });
-  if (!seen) setTimeout(() => welcome.showModal(), 1800);
+  if (!joined) setTimeout(() => welcome.showModal(), 500);
 }
 
 // Mailing list: posts the email to a Google Form, which stores it in a Google Sheet.
