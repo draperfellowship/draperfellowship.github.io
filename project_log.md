@@ -231,3 +231,7 @@ Requests relayed from the organizers plus the user's own.
 ## 2026-09-22: Hero highlight blue instead of red (PR #23)
 
 - "Tim Draper." in the headline now uses `--accent`, which on dark sections is the sky tint `#9dbaf1` (the navy itself is 1.4:1 on dark). Checked over the photo at both widths.
+
+## 2026-09-22: Countdown seconds in blue (PR #24)
+
+- Seconds digits and label switched from red to `--accent` (sky tint on the dark hero) to match the headline highlight.
