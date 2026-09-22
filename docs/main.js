@@ -24,11 +24,12 @@ if (countdown) {
   const timer = setInterval(tick, 1000);
 }
 
-// Welcome popup: once per browser session, after the page has had a moment to load.
+// Welcome popup. Dismissed: stays away for this browser session. Joined the list: stays away for good.
+// Both flags live only in this browser; nothing is sent anywhere.
 const welcome = document.querySelector('.welcome');
 if (welcome && typeof welcome.showModal === 'function') {
   let seen = false;
-  try { seen = sessionStorage.getItem('welcomeSeen') === '1'; } catch (e) {}
+  try { seen = sessionStorage.getItem('welcomeSeen') === '1' || localStorage.getItem('joinedList') === '1'; } catch (e) {}
   const close = () => {
     welcome.close();
     try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {}
@@ -38,7 +39,7 @@ if (welcome && typeof welcome.showModal === 'function') {
   welcome.querySelector('a.btn').addEventListener('click', close);
   welcome.addEventListener('click', e => { if (e.target === welcome) close(); });
   welcome.addEventListener('cancel', () => { try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {} });
-  if (!seen) setTimeout(() => welcome.showModal(), 1200);
+  if (!seen) setTimeout(() => welcome.showModal(), 1800);
 }
 
 // Mailing list: posts the email to a Google Form, which stores it in a Google Sheet.
@@ -65,6 +66,7 @@ if (signup) {
     try {
       await fetch(`https://docs.google.com/forms/d/e/${signup.dataset.form}/formResponse`, { method: 'POST', mode: 'no-cors', body });
       signup.classList.add('is-done');
+      try { localStorage.setItem('joinedList', '1'); } catch (err) {}
       msg.classList.remove('is-error');
       msg.textContent = `You're on the list. We'll write to ${email}.`;
     } catch (err) {

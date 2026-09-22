@@ -429,6 +429,21 @@ footer {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
 }
 .welcome::backdrop { background: rgba(20, 17, 15, 0.7); }
+
+/* Gradual entrance. Browsers without @starting-style just show the dialog immediately. */
+@media (prefers-reduced-motion: no-preference) {
+  .welcome, .welcome::backdrop {
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), overlay 0.8s allow-discrete, display 0.8s allow-discrete;
+  }
+  .welcome[open] { opacity: 1; transform: translateY(0); }
+  .welcome[open]::backdrop { opacity: 1; }
+  @starting-style {
+    .welcome[open] { opacity: 0; transform: translateY(28px); }
+    .welcome[open]::backdrop { opacity: 0; }
+  }
+  .welcome:not([open]) { opacity: 0; transform: translateY(28px); }
+  .welcome:not([open])::backdrop { opacity: 0; }
+}
 .welcome h2 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 14px; }
 .welcome p:not(.eyebrow) { color: #3d3731; }
 .welcome .eyebrow { margin-bottom: 12px; }
