@@ -41,6 +41,39 @@ if (welcome && typeof welcome.showModal === 'function') {
   if (!seen) setTimeout(() => welcome.showModal(), 1200);
 }
 
+// Mailing list: posts the email to a Google Form, which stores it in a Google Sheet.
+// The request is opaque (no-cors), so success means "sent", not "confirmed"; the form is simple enough for that.
+const signup = document.querySelector('.signup');
+if (signup) {
+  const input = signup.querySelector('input');
+  const msg = signup.querySelector('.signup-msg');
+  signup.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'Please enter a valid email address.';
+      msg.classList.add('is-error');
+      input.focus();
+      return;
+    }
+    if (signup.dataset.form === 'GOOGLE_FORM_ID') {
+      msg.textContent = 'Sign-up is not connected yet. Please apply using the button below.';
+      msg.classList.add('is-error');
+      return;
+    }
+    const body = new URLSearchParams({ [`entry.${signup.dataset.entry}`]: email });
+    try {
+      await fetch(`https://docs.google.com/forms/d/e/${signup.dataset.form}/formResponse`, { method: 'POST', mode: 'no-cors', body });
+      signup.classList.add('is-done');
+      msg.classList.remove('is-error');
+      msg.textContent = `You're on the list. We'll write to ${email}.`;
+    } catch (err) {
+      msg.textContent = 'Something went wrong. Please try again.';
+      msg.classList.add('is-error');
+    }
+  });
+}
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Timeline road: a winding road drawn through one checkpoint per date. As you scroll, the driven

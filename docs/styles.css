@@ -432,7 +432,29 @@ footer {
 .welcome h2 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 14px; }
 .welcome p:not(.eyebrow) { color: #3d3731; }
 .welcome .eyebrow { margin-bottom: 12px; }
-.welcome .cta-row { margin-top: 26px; gap: 14px 24px; }
+.welcome .cta-row { margin-top: 22px; gap: 14px 24px; }
+.signup { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.signup input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 13px 16px;
+  border: 1px solid #c9c0b2;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+.signup input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.signup .btn { padding-block: 13px; }
+.signup-msg { flex-basis: 100%; min-height: 1.4em; margin: 0; font-size: 0.9375rem; color: var(--green); }
+.signup-msg.is-error { color: var(--red); }
+.signup.is-done input, .signup.is-done .btn { display: none; }
+
+.btn-outline { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 .welcome-close {
   position: absolute;
   top: 12px;
