@@ -9,7 +9,7 @@ Single-page static site for The Draper Race, a fall-quarter startup accelerator 
 
 ## What's in place
 - ✅ `docs/index.html`: hero, at-a-glance stats, program pillars, Tim Draper portfolio logo marquee (`docs/logos/`, grayscale with color on hover), race-themed timeline, funding band, before-you-apply checklist with the Apply button (Google Form: https://forms.gle/SGNK3WYaj53eyeUG7).
-- ✅ `docs/styles.css`: cream paper + ink, navy accent `#142e5f` (tint `#9dbaf1` on dark sections). Fonts: Barlow Condensed (display, bold uppercase headings) + Barlow (body).
+- ✅ `docs/styles.css`: cream paper + ink, navy accent `#142e5f` (tint `#9dbaf1` on dark sections), red `#c4301c` for Apply buttons and Deadline/Required tags, green `#2e6b45` for the Optional tag. Fonts: Barlow Condensed (display, bold uppercase headings) + Barlow (body).
 - ✅ `docs/main.js`: timeline road (SVG built at runtime: winding road through one checkpoint per date, driven stretch painted navy, car that follows scroll, checkered flags that light up, finish line at pitch day), fade-up reveals, count-ups, marquee. Page is complete without JS; autonomous motion is off under `prefers-reduced-motion`.
 - ✅ Verified at 1280x900 and 390x800 by a scripted scroll (CDP): flags 0/6 to 6/6, road fully painted at bottom, no horizontal overflow.
 
