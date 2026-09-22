@@ -60,7 +60,7 @@ h1, h2 {
   line-height: 0.98;
 }
 
-h1 { font-size: clamp(2.0625rem, 5.4vw, 4.125rem); max-width: 22ch; margin-inline: auto; }
+h1 { font-size: clamp(2.0625rem, 5.4vw, 4.125rem); margin-inline: auto; }
 h1 em { color: var(--red); }
 h2 { font-size: clamp(2.125rem, 4.8vw, 3.5rem); max-width: 22ch; }
 h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
