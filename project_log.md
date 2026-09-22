@@ -221,3 +221,8 @@ Requests relayed from the organizers plus the user's own.
 ## 2026-09-22: Hero headline (PR #20)
 
 - New headline at the user's request: "Learn startups. Build something real. Pitch to Tim Draper." with "Tim Draper." in red. One sentence per line via `<br>`; the h1 max-width was removed since the breaks control the shape. Checked at 1280px and 390px.
+
+## 2026-09-22: Photo behind the landing block (PR #21)
+
+- User supplied `SO14_FR-WYDKA_QG.jpg` (Hoover Tower at golden hour, 2000x1342, 2.3 MB) in the project root. Web copy `docs/hero.jpg` at 1800px wide, JPEG q74 progressive, 116 KB. The original is gitignored.
+- Applied to the hero + stats wrapper (`.hero-bg`) with a top-to-bottom ink gradient (62% to 92%) over the photo so cream text keeps contrast; stats dividers switched to translucent cream. On phones the photo is positioned toward the tower (76% 30%, 130% height) since the portrait crop otherwise shows only sky.
