@@ -227,3 +227,7 @@ Requests relayed from the organizers plus the user's own.
 - User supplied `SO14_FR-WYDKA_QG.jpg` (Hoover Tower at golden hour, 2000x1342, 2.3 MB) in the project root. Web copy `docs/hero.jpg` at 1800px wide, JPEG q74 progressive, 116 KB. The original is gitignored.
 - Applied to the hero + stats wrapper (`.hero-bg`) with a top-to-bottom ink gradient (62% to 92%) over the photo so cream text keeps contrast; stats dividers switched to translucent cream. On phones the photo is positioned toward the tower (76% 30%, 130% height) since the portrait crop otherwise shows only sky.
 - Follow-up (PR #22): phones use a heavier gradient (74% to 94%) because the red seconds digits sat over the tower's stone.
+
+## 2026-09-22: Hero highlight blue instead of red (PR #23)
+
+- "Tim Draper." in the headline now uses `--accent`, which on dark sections is the sky tint `#9dbaf1` (the navy itself is 1.4:1 on dark). Checked over the photo at both widths.
