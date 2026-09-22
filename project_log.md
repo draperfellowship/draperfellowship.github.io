@@ -174,3 +174,11 @@ Requests relayed from the organizers plus the user's own.
 
 - After PR #11 the user saw no color change. Verified in their Chrome tab: HTML was current (`.tag-go` present) but `styles.css` was the cached pre-#11 copy. GitHub Pages serves everything with `cache-control: max-age=600`, so a browser that loaded the page shortly before a deploy keeps the old CSS for up to 10 minutes.
 - Fix: `styles.css?v=N` and `main.js?v=N` in `index.html`. **Bump N whenever either file changes**, otherwise returning visitors can get a stale asset. HTML itself is still cached up to 10 minutes; that only delays a change, it cannot mix old CSS with new HTML.
+
+## 2026-09-22: Countdown hero, rename to The Draper Fellowship, welcome popup (PR #13)
+
+- Hero rebuilt to the organizers' mock: centered headline (their copy, "costs you almost nothing"), "right now." in red, DD:HH:MM:SS countdown (seconds in red, labels in navy tint), caption, red "Start your application" (opens the form) and "What you actually do" (scrolls to Program). Deadline assumed 11:59:59 pm Pacific on Sept 26; it lives in one `data-deadline` attribute. After the deadline the digits go muted and the caption reads "Applications are now closed."
+- The intro paragraph left the hero and now sits under the Program heading as `.intro`, so the organizers' description is still on the page.
+- Welcome popup: native `<dialog>` opened 1.2 s after load, once per browser session (`sessionStorage`, try/catch). Closes on X, "Read about the program first", backdrop click, Esc, or after clicking the application button. No email capture: there is no backend, and the request said to link the application.
+- Name: "The Draper Race" to "The Draper Fellowship" everywhere. Race-themed timeline kept as previously requested.
+- Asset version bumped to `?v=12`.
