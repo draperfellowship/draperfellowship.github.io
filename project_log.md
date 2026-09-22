@@ -209,3 +209,7 @@ Requests relayed from the organizers plus the user's own.
 
 - Delay 1.8 s to 0.5 s; fade 0.8 s to 0.45 s. User found the previous timing too slow.
 - Removed the per-session "dismissed" flag: the popup now opens on every page load until the visitor joins the list (`localStorage.joinedList`). User wanted it back on reload when nobody signed up.
+
+## 2026-09-22: Apply checklist no longer wraps (PR #18)
+
+- Removed `max-width: 60ch` from `.apply .checks`; the fourth item (the longest) now stays on one line at any desktop width down to 900px. It still wraps on phones, where nothing would fit on one line.
