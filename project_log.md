@@ -198,3 +198,9 @@ Requests relayed from the organizers plus the user's own.
 - The question's Required toggle did not take (the card re-laid out under my click). Not needed: the site validates the address before posting. The form's own title bar still reads "Untitled form" in Drive; the form heading is correct.
 - `main.js` posts `entry.<id>=<email>` to `.../formResponse` with `mode: 'no-cors'`, so the browser cannot read the result; the page treats a completed request as success. A test POST from curl returned 200 and appeared in the Sheet within seconds (row 2, `test-from-site-setup@example.com`; delete it when real signups begin).
 - Export: Sheet, File, Download, CSV.
+
+## 2026-09-22: Popup fades in gradually and stays away after joining (PR #16)
+
+- Entrance: 0.8 s opacity + rise on the dialog and its backdrop using `@starting-style` with `transition-behavior: allow-discrete` on `display` and `overlay`. Browsers without `@starting-style` show it instantly. Opens after 1.8 s (was 1.2 s). Off under reduced motion.
+- Memory: joining the list sets `localStorage.joinedList`; the popup never opens again in that browser. Dismissing still sets `sessionStorage.welcomeSeen` (this session only). Both are plain browser storage, not cookies, sent nowhere; a dismiss preference like this needs no consent banner.
+- Verified over CDP: opacity 0 at 1.9 s, 0.10 at 2.3 s, 1 at 3.2 s; suppressed after the joined flag; reappears when the flag is cleared.
