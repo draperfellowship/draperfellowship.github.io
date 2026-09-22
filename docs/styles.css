@@ -57,7 +57,7 @@ h1, h2 {
   line-height: 0.98;
 }
 
-h1 { font-size: clamp(2.75rem, 7.2vw, 5.5rem); max-width: 17ch; }
+h1 { font-size: clamp(2.0625rem, 5.4vw, 4.125rem); max-width: 22ch; }
 h1 em { color: var(--accent); }
 h2 { font-size: clamp(2.125rem, 4.8vw, 3.5rem); max-width: 22ch; }
 h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
@@ -193,19 +193,22 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 
 .portfolio { margin-top: 72px; padding-top: 32px; border-top: 1px solid var(--line); }
 
-.portfolio ul { display: flex; flex-wrap: wrap; gap: 6px 0; }
+.logos { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 56px; }
 
-.portfolio li {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: clamp(1.5rem, 3vw, 2.125rem);
-  line-height: 1.3;
+/* logos are shown in one tone so the mixed brand colors read as a set; hover restores color */
+.logos img {
+  display: block;
+  height: 34px;
+  width: auto;
+  filter: grayscale(1);
+  opacity: 0.8;
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
-.portfolio li:not(:last-child)::after {
-  content: "\00b7";
-  color: var(--accent);
-  margin-inline: 14px;
-}
+.logos img:hover { filter: none; opacity: 1; }
+/* wide wordmarks and tall marks sized to similar visual weight */
+.logos img[alt="Tesla"], .logos img[alt="SpaceX"] { height: 22px; }
+.logos img[alt="Colossal Biosciences"], .logos img[alt="Polymarket"], .logos img[alt="Robinhood"] { height: 28px; }
+.logos img[alt="Hotmail"], .logos img[alt="Twitter"] { height: 40px; }
 
 /* Timeline: main.js draws a winding road between the date and detail columns */
 
@@ -359,9 +362,7 @@ footer {
 }
 .marquee .track { display: flex; width: max-content; animation: marquee 45s linear infinite; }
 .marquee:hover .track { animation-play-state: paused; }
-.marquee ul { flex-wrap: nowrap; flex-shrink: 0; }
-.marquee li { white-space: nowrap; }
-.marquee li:last-child::after { content: "\00b7"; color: var(--accent); margin-inline: 14px; }
+.marquee ul { flex-wrap: nowrap; flex-shrink: 0; padding-right: 56px; }
 
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes flag-pop { 50% { transform: scale(1.3); } }
@@ -387,6 +388,13 @@ footer {
   .stats div:nth-child(n+3) { border-top: 1px solid var(--line); }
 
   .pillars { grid-template-columns: 1fr; gap: 32px; }
+
+  .logos { gap: 20px 36px; }
+  .logos img { height: 26px; }
+  .logos img[alt="Tesla"], .logos img[alt="SpaceX"] { height: 17px; }
+  .logos img[alt="Colossal Biosciences"], .logos img[alt="Polymarket"], .logos img[alt="Robinhood"] { height: 22px; }
+  .logos img[alt="Hotmail"], .logos img[alt="Twitter"] { height: 30px; }
+  .marquee ul { padding-right: 36px; }
 
   .timeline-wrap { --road-x: 0px; --road-w: 76px; }
   .timeline > li { display: block; padding: 22px 0 22px calc(var(--road-w) + 8px); }

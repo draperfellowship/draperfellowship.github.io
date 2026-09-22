@@ -154,3 +154,12 @@ Requests relayed from the organizers plus the user's own.
 - Repo renamed with `gh api -X PATCH repos/draperrace/draperfounders.github.io -f name=draperrace.github.io`. Pages settings carried over; requested a build; the site served at the new address on the first check.
 - Verified: `/`, `/styles.css`, `/main.js` all 200 at https://draperrace.github.io/. `draperfounders.github.io` now 404 (Pages does not redirect across renames).
 - Local `origin` still names the original repo path; GitHub's redirects chain through the transfer and both renames, so fetch and push keep working.
+
+## 2026-09-22: Smaller headline, company logos (PR #10)
+
+- h1 down 25%: `clamp(2.75rem, 7.2vw, 5.5rem)` to `clamp(2.0625rem, 5.4vw, 4.125rem)`. `max-width` went 17ch to 22ch so the headline block keeps roughly the same pixel width (ch scales with font size); only the type got smaller.
+- Portfolio names replaced by logo images in `docs/logos/` (12 files, 11 SVG + `baidu.png`). Sources: Wikimedia Commons SVGs for Tesla, Bitcoin, SpaceX, Skype (2017 wordmark), Twitch, Hotmail (classic 1990s mark, the era of Draper's investment), Twitter (bird, matching the name in the copy), Ring, Polymarket, Robinhood, Colossal; Baidu wordmark from baidu.com since Commons has only the paw glyph. Simple Icons was tried first but only provides square glyphs, which are not recognizable for Robinhood, Baidu, Ring.
+- Two Commons SVGs (bitcoin, ring) lacked a `viewBox`, so CSS height could not scale them; added one from their width/height.
+- Treatment: `filter: grayscale(1)` at 80% opacity, color on hover; per-logo heights so wide wordmarks (Tesla, SpaceX) and tall marks (Hotmail, Twitter bird) carry similar visual weight. Under reduced motion the list wraps; otherwise the existing marquee scrolls it.
+- Logos are third-party trademarks used nominatively ("known for his investments in"), the same way VC and accelerator sites list portfolio companies.
+- Wikimedia API returns empty bodies when hit rapidly with a generic UA; a descriptive User-Agent plus 1.5 s pauses fixed it.
