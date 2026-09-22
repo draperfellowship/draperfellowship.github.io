@@ -433,7 +433,7 @@ footer {
 /* Gradual entrance. Browsers without @starting-style just show the dialog immediately. */
 @media (prefers-reduced-motion: no-preference) {
   .welcome, .welcome::backdrop {
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), overlay 0.8s allow-discrete, display 0.8s allow-discrete;
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
   }
   .welcome[open] { opacity: 1; transform: translateY(0); }
   .welcome[open]::backdrop { opacity: 1; }

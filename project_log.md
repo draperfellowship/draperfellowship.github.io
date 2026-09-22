@@ -204,3 +204,8 @@ Requests relayed from the organizers plus the user's own.
 - Entrance: 0.8 s opacity + rise on the dialog and its backdrop using `@starting-style` with `transition-behavior: allow-discrete` on `display` and `overlay`. Browsers without `@starting-style` show it instantly. Opens after 1.8 s (was 1.2 s). Off under reduced motion.
 - Memory: joining the list sets `localStorage.joinedList`; the popup never opens again in that browser. Dismissing still sets `sessionStorage.welcomeSeen` (this session only). Both are plain browser storage, not cookies, sent nowhere; a dismiss preference like this needs no consent banner.
 - Verified over CDP: opacity 0 at 1.9 s, 0.10 at 2.3 s, 1 at 3.2 s; suppressed after the joined flag; reappears when the flag is cleared.
+
+## 2026-09-22: Popup opens sooner and returns on reload until joined (PR #17)
+
+- Delay 1.8 s to 0.5 s; fade 0.8 s to 0.45 s. User found the previous timing too slow.
+- Removed the per-session "dismissed" flag: the popup now opens on every page load until the visitor joins the list (`localStorage.joinedList`). User wanted it back on reload when nobody signed up.
