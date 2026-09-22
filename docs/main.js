@@ -1,5 +1,46 @@
 // Progressive enhancement only: without this script the page is fully readable and static.
 
+// Countdown to the application deadline.
+const countdown = document.querySelector('.countdown');
+if (countdown) {
+  const deadline = new Date(countdown.dataset.deadline).getTime();
+  const cells = {};
+  countdown.querySelectorAll('[data-unit]').forEach(el => { cells[el.dataset.unit] = el; });
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    const left = Math.max(0, deadline - Date.now());
+    const s = Math.floor(left / 1000);
+    cells.d.textContent = pad(Math.floor(s / 86400));
+    cells.h.textContent = pad(Math.floor(s / 3600) % 24);
+    cells.m.textContent = pad(Math.floor(s / 60) % 60);
+    cells.s.textContent = pad(s % 60);
+    if (left === 0) {
+      countdown.classList.add('is-over');
+      document.querySelector('.until').textContent = 'Applications are now closed.';
+      clearInterval(timer);
+    }
+  };
+  tick();
+  const timer = setInterval(tick, 1000);
+}
+
+// Welcome popup: once per browser session, after the page has had a moment to load.
+const welcome = document.querySelector('.welcome');
+if (welcome && typeof welcome.showModal === 'function') {
+  let seen = false;
+  try { seen = sessionStorage.getItem('welcomeSeen') === '1'; } catch (e) {}
+  const close = () => {
+    welcome.close();
+    try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {}
+  };
+  welcome.querySelector('.welcome-close').addEventListener('click', close);
+  welcome.querySelector('.welcome-later').addEventListener('click', close);
+  welcome.querySelector('a.btn').addEventListener('click', close);
+  welcome.addEventListener('click', e => { if (e.target === welcome) close(); });
+  welcome.addEventListener('cancel', () => { try { sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {} });
+  if (!seen) setTimeout(() => welcome.showModal(), 1200);
+}
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Timeline road: a winding road drawn through one checkpoint per date. As you scroll, the driven
