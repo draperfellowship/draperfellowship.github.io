@@ -182,7 +182,7 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
   text-transform: uppercase;
   color: var(--accent);
 }
-.countdown div:last-child .num, .countdown div:last-child .unit { color: var(--red); }
+.countdown div:last-child .num, .countdown div:last-child .unit { color: var(--accent); }
 .countdown.is-over .num, .countdown.is-over .unit { color: var(--muted); }
 
 .until { margin-top: 22px; color: #d5cdc1; }
