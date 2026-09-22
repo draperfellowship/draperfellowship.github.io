@@ -375,7 +375,7 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 
 /* Apply */
 
-.apply .checks { margin-top: 32px; max-width: 60ch; }
+.apply .checks { margin-top: 32px; }
 .apply .btn { margin-top: 44px; }
 
 footer {
