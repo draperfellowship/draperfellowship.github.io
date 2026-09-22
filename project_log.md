@@ -169,3 +169,8 @@ Requests relayed from the organizers plus the user's own.
 - Proposed a wider "paddock" palette (red CTA and urgency tags, green checks and optional tag, gold/silver/bronze prizes, gold $85K and callout, navy pillar rules, red car stripe) on a local branch for review.
 - User kept three pieces and reverted the rest: Apply buttons red `#c4301c` with white text (5.6:1), Deadline/Required tags red, Optional tag green `#2e6b45` (new `.tag-go` class). Everything else stays navy/ink, including the attendance warning, checkmarks, prizes and car stripe.
 - `--on-accent` is now only used by nothing after `.btn` moved to `--red`; left in place since it is harmless and one line.
+
+## 2026-09-22: Stale stylesheet in the user's browser (PR #12)
+
+- After PR #11 the user saw no color change. Verified in their Chrome tab: HTML was current (`.tag-go` present) but `styles.css` was the cached pre-#11 copy. GitHub Pages serves everything with `cache-control: max-age=600`, so a browser that loaded the page shortly before a deploy keeps the old CSS for up to 10 minutes.
+- Fix: `styles.css?v=N` and `main.js?v=N` in `index.html`. **Bump N whenever either file changes**, otherwise returning visitors can get a stale asset. HTML itself is still cached up to 10 minutes; that only delays a change, it cannot mix old CSS with new HTML.
