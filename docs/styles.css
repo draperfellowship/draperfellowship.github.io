@@ -60,7 +60,7 @@ h1, h2 {
   line-height: 0.98;
 }
 
-h1 { font-size: clamp(2.0625rem, 5.4vw, 4.125rem); margin-inline: auto; }
+h1 { font-size: clamp(2.0625rem, 7.2vw, 5.5rem); margin-inline: auto; }
 h1 em { color: var(--accent); }
 h2 { font-size: clamp(2.125rem, 4.8vw, 3.5rem); max-width: 22ch; }
 h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
@@ -152,7 +152,7 @@ h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
   align-items: flex-start;
   margin-top: clamp(28px, 4vw, 48px);
 }
-.countdown div { position: relative; padding-inline: 0.22em; font-size: clamp(2.5rem, 8vw, 6.5rem); }
+.countdown div { position: relative; padding-inline: 0.22em; font-size: clamp(2rem, 5.6vw, 4.25rem); }
 /* the colon between groups */
 .countdown div + div::before {
   content: ":";

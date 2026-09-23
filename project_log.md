@@ -235,3 +235,9 @@ Requests relayed from the organizers plus the user's own.
 ## 2026-09-22: Countdown seconds in blue (PR #24)
 
 - Seconds digits and label switched from red to `--accent` (sky tint on the dark hero) to match the headline highlight.
+
+## 2026-09-23: Deadline moved to Sunday Sept 27 11:59 pm; hero sizing; link text (PR #25)
+
+- Deadline: `data-deadline` now `2026-09-27T23:59:59-07:00`. Updated every mention: countdown caption, timeline first entry ("Sept 27, Sunday, 11:59 pm"), apply-section button ("Apply by Sunday, Sept 27"), popup text, both meta descriptions. "Week of Sept 28" for decisions left as is.
+- Headline up from 66px to 88px max at desktop (`clamp(2.0625rem, 7.2vw, 5.5rem)`); phone minimum unchanged so "Build something real." stays on one line. Countdown digits down from 104px to 68px max.
+- "What you actually do" link renamed "Program Details".
