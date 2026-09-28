@@ -241,3 +241,7 @@ Requests relayed from the organizers plus the user's own.
 - Deadline: `data-deadline` now `2026-09-27T23:59:59-07:00`. Updated every mention: countdown caption, timeline first entry ("Sept 27, Sunday, 11:59 pm"), apply-section button ("Apply by Sunday, Sept 27"), popup text, both meta descriptions. "Week of Sept 28" for decisions left as is.
 - Headline up from 66px to 88px max at desktop (`clamp(2.0625rem, 7.2vw, 5.5rem)`); phone minimum unchanged so "Build something real." stays on one line. Countdown digits down from 104px to 68px max.
 - "What you actually do" link renamed "Program Details".
+
+## 2026-09-28: Deadline passed (PR #26)
+
+- After midnight Pacific, the countdown and its caption were replaced by: "The deadline for this quarter's program has officially passed. Please reach out to csimonia@stanford.edu if you would like to submit a late application." (mailto link). Buttons, popup and the rest unchanged per the request. The countdown JS is inert without its element. Asset version v23.
