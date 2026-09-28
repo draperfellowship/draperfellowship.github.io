@@ -246,3 +246,4 @@ Requests relayed from the organizers plus the user's own.
 
 - After midnight Pacific, the countdown and its caption were replaced by: "The deadline for this quarter's program has officially passed. Please reach out to csimonia@stanford.edu if you would like to submit a late application." (mailto link). Buttons, popup and the rest unchanged per the request. The countdown JS is inert without its element. Asset version v23.
 - Follow-up (PR #27): message enlarged (up to 28px, weight 500) and set in a translucent dark panel with a pale-blue border and soft glow so it stands out over the photo.
+- Follow-up (PR #28): user rejected the panel; reverted it. Message is now just larger plain text (up to 32px, weight 500).
