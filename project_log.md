@@ -247,3 +247,26 @@ Requests relayed from the organizers plus the user's own.
 - After midnight Pacific, the countdown and its caption were replaced by: "The deadline for this quarter's program has officially passed. Please reach out to csimonia@stanford.edu if you would like to submit a late application." (mailto link). Buttons, popup and the rest unchanged per the request. The countdown JS is inert without its element. Asset version v23.
 - Follow-up (PR #27): message enlarged (up to 28px, weight 500) and set in a translucent dark panel with a pale-blue border and soft glow so it stands out over the photo.
 - Follow-up (PR #28): user rejected the panel; reverted it. Message is now just larger plain text (up to 32px, weight 500).
+
+## 2026-10-04: Cofounder matching page and tools (PR #29)
+
+Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want to build with; an algorithm pairs them.
+
+**Decisions (user chose "page on site with personal links"; the rest are my defaults, unconfirmed):** pairs; rank up to 5; odd person out joins the best-fitting pair as a trio; no explicit "do not pair" option (unranked is just a high cost).
+
+**Algorithm (`tools/match.py`):** pair cost = rankA(B)^2 + rankB(A)^2, symmetric; unranked counts as rank k+2. Squaring yields the order the user described (mutual #1 = 2, then 1+2 = 5, 2+2 = 8, 1+3 = 10) and penalises lopsided pairs. Mutual #1 pairs are locked; the rest use minimum-weight matching (`networkx.min_weight_matching`), which is globally optimal rather than greedy. The report lists non-submitters and any "blocking pairs" (two people who would both prefer each other) for manual review. Stable-roommates was rejected because a stable solution need not exist, especially with top-k lists.
+
+**Page (`docs/match/`):** link format `/match/#<event key>.<token>`. `roster.enc` is the roster encrypted with AES-GCM; the key is only in the emailed links (URL fragment, never sent to a server), so attendee names are not readable from the public repo. The roster holds names, ids and SHA-256 hashes of tokens, so a visitor can identify only themselves. Rankings post as JSON `{"t": token, "c": [ids]}` to a Google Form; latest submission per token wins; forged tokens are dropped by `match.py`.
+
+**Storage (created in the user's Google account via their Chrome, same pattern as the mailing list):**
+- Form "Draper Fellowship cofounder rankings": https://docs.google.com/forms/d/186OpYehYUdwYEsZ25MgExs_MzC5gSnSxQAFbxLAhnJE/edit (public ID `1FAIpQLSfKG64lp2JRfSBLvQhcKNfRNk2JUpusC7Sj-TjBCpWRB7tJ8A`, entry `751092105`)
+- Sheet "Draper Fellowship cofounder rankings (Responses)": https://docs.google.com/spreadsheets/d/1KzckIfzbYIORk7221MHdBwqRkFrBrf0Em0wsixG5JPc/edit (row 2 is a setup test with a fake token; harmless, `match.py` ignores it)
+
+**Runbook:**
+1. Put attendees in `private/attendees.csv` with `name,email` columns (`private/` is gitignored).
+2. `python tools/make_links.py private/attendees.csv` writes `docs/match/roster.enc` (commit via PR) and `private/links.csv` (name, email, link) for a mail merge. Re-running keeps existing links valid.
+3. After submissions: Sheet, File, Download, CSV to `private/responses.csv`, then `python tools/match.py private/responses.csv`. Output in `private/pairs.csv`.
+
+**Tested:** 21 dummy attendees with random rankings plus engineered cases (mutual #1 locked, resubmission overrides, forged token and junk rows dropped, self and duplicate picks stripped, odd count gives one trio, two non-submitters listed). Browser test over CDP: no link, wrong token and wrong key all refused; valid link greets by first name, caps at 5, reorders, searches, posts the right payload, restores on reload; no horizontal overflow at 390px. Dummy data moved to the trash afterwards (a user hook blocks `rm` with force flags; use `trash`).
+
+**Not done:** real attendee list not yet provided; emailing the links is the user's step.

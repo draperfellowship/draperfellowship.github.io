@@ -3,3 +3,5 @@
 website_content.md
 # original full-size hero photo; docs/hero.jpg is the web copy
 SO14_FR-WYDKA_QG.jpg
+# attendee roster, tokens, links, responses and results; never commit
+private/

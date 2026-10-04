@@ -1,0 +1,110 @@
+// Personal link format: /match/#<event key>.<personal token>
+// The roster is stored encrypted (roster.enc); the key exists only in the emailed links, so names are
+// not readable from the public site. The token identifies the visitor; only its hash is in the roster.
+
+const main = document.querySelector('.match');
+const title = document.querySelector('.match-title');
+const lede = document.querySelector('.match-lede');
+const grid = document.querySelector('.match-grid');
+const picksEl = document.querySelector('.picks');
+const peopleEl = document.querySelector('.people');
+const emptyEl = document.querySelector('.picks-empty');
+const search = document.querySelector('#search');
+const submit = document.querySelector('#submit');
+const msg = document.querySelector('.match-msg');
+
+const fromB64 = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+function stop(heading, text) {
+  title.textContent = heading;
+  lede.textContent = text;
+}
+
+async function loadRoster(keyB64) {
+  const res = await fetch('roster.enc', { cache: 'no-store' });
+  if (!res.ok) return null;
+  const blob = fromB64((await res.text()).trim());
+  const key = await crypto.subtle.importKey('raw', fromB64(keyB64), 'AES-GCM', false, ['decrypt']);
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: blob.slice(0, 12) }, key, blob.slice(12));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+async function start() {
+  const [keyB64, token] = location.hash.slice(1).split('.');
+  if (!keyB64 || !token) return stop('Use your personal link', 'This page opens from the link in your email from the Draper Fellowship team.');
+
+  let roster;
+  try { roster = await loadRoster(keyB64); } catch (e) { roster = undefined; }
+  if (roster === null) return stop('Matching is not open yet', 'Check back after the speed-dating session.');
+  if (!roster) return stop('This link is not valid', 'Please open the link exactly as it appears in your email.');
+
+  const me = roster.who[hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token)))];
+  const self = roster.people.find(p => p.id === me);
+  if (!self) return stop('This link is not valid', 'Please open the link exactly as it appears in your email.');
+
+  const max = roster.k;
+  const others = roster.people.filter(p => p.id !== me).sort((a, b) => a.name.localeCompare(b.name));
+  const byId = new Map(others.map(p => [p.id, p]));
+  const storeKey = 'matchPicks:' + me;
+  let picks = [];
+  try { picks = (JSON.parse(localStorage.getItem(storeKey)) || []).filter(id => byId.has(id)).slice(0, max); } catch (e) {}
+
+  title.textContent = `Hi ${self.name.split(' ')[0]}. Who do you want to build with?`;
+  lede.textContent = `Rank up to ${max} people, best fit first. You can change your ranking and submit again; only your latest submission counts.`;
+  grid.hidden = false;
+  document.querySelector('.how').hidden = false;
+
+  const button = (label, text, onClick, disabled) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'icon-btn'; b.textContent = text; b.setAttribute('aria-label', label); b.disabled = !!disabled;
+    b.addEventListener('click', onClick);
+    return b;
+  };
+  const move = (i, d) => { [picks[i], picks[i + d]] = [picks[i + d], picks[i]]; render(); };
+
+  function render() {
+    picksEl.replaceChildren(...picks.map((id, i) => {
+      const li = document.createElement('li');
+      const rank = Object.assign(document.createElement('span'), { className: 'rank', textContent: i + 1 });
+      const name = Object.assign(document.createElement('span'), { className: 'name', textContent: byId.get(id).name });
+      li.append(rank, name,
+        button(`Move ${byId.get(id).name} up`, '↑', () => move(i, -1), i === 0),
+        button(`Move ${byId.get(id).name} down`, '↓', () => move(i, 1), i === picks.length - 1),
+        button(`Remove ${byId.get(id).name}`, '×', () => { picks.splice(i, 1); render(); }));
+      return li;
+    }));
+    emptyEl.hidden = picks.length > 0;
+    const q = search.value.trim().toLowerCase();
+    peopleEl.replaceChildren(...others.filter(p => !picks.includes(p.id) && p.name.toLowerCase().includes(q)).map(p => {
+      const li = document.createElement('li');
+      const name = Object.assign(document.createElement('span'), { className: 'name', textContent: p.name });
+      li.append(name, button(`Add ${p.name}`, '+', () => { picks.push(p.id); render(); }, picks.length >= max));
+      return li;
+    }));
+    submit.disabled = picks.length === 0;
+    msg.textContent = '';
+    msg.classList.remove('is-error');
+  }
+
+  search.addEventListener('input', render);
+
+  submit.addEventListener('click', async () => {
+    submit.disabled = true;
+    const body = new URLSearchParams({ [`entry.${main.dataset.entry}`]: JSON.stringify({ t: token, c: picks }) });
+    try {
+      // no-cors: the response is opaque, so a completed request is treated as saved
+      await fetch(`https://docs.google.com/forms/d/e/${main.dataset.form}/formResponse`, { method: 'POST', mode: 'no-cors', body });
+      try { localStorage.setItem(storeKey, JSON.stringify(picks)); } catch (e) {}
+      msg.textContent = `Saved: ${picks.map((id, i) => `${i + 1}. ${byId.get(id).name}`).join(', ')}.`;
+    } catch (e) {
+      msg.textContent = 'Could not save. Check your connection and try again.';
+      msg.classList.add('is-error');
+    }
+    submit.disabled = false;
+  });
+
+  render();
+}
+
+start();
