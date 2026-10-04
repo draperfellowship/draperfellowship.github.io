@@ -1,6 +1,6 @@
 # Current State: The Draper Fellowship website (formerly Draper Race, Draper Founders Society)
 
-Updated: 2026-09-23
+Updated: 2026-10-04
 
 Companion docs: `project_log.md` (chronological history, decisions, research), `website_content.md` (original content brief; gitignored because it holds an unsent email draft; now out of date on name, headline and the Oct 7 date).
 
@@ -13,11 +13,15 @@ Single-page static site for The Draper Fellowship, a fall-quarter startup accele
 - ✅ `docs/main.js`: timeline road (SVG built at runtime: winding road through one checkpoint per date, driven stretch painted navy, car that follows scroll, checkered flags that light up, finish line at pitch day), fade-up reveals, count-ups, marquee. Page is complete without JS; autonomous motion is off under `prefers-reduced-motion`.
 - ✅ Verified at 1280x900 and 390x800 by a scripted scroll (CDP): flags 0/6 to 6/6, road fully painted at bottom, no horizontal overflow.
 
+- ✅ `docs/match/` cofounder matching page (personal links, encrypted roster, rankings stored in a Google Sheet) and `tools/make_links.py`, `tools/match.py`. Runbook in `project_log.md`.
+- ✅ Hero now shows the deadline-passed message instead of the countdown (since 2026-09-28).
+
 ## What's NOT in place
+- 🟡 Matching is built but not open: needs `private/attendees.csv` (name, email), then links emailed by the user.
 - ❌ Custom domain, contact email, photos, social preview image.
 
 ## What's being worked on right now (and why)
-Nothing open. All requested changes are live; applications are due Sept 26.
+Waiting on the attendee list to generate personal matching links before the Oct 7 kickoff. Unconfirmed defaults: pairs, top 5, odd person joins a trio.
 
 ## Most recent decisions (sticky context)
 - 2026-09-22: Renamed to "The Draper Fellowship"; org and repo renamed to `draperfellowship`. Hero rebuilt as a centered countdown per the organizers' mock (headline now "costs you" not "will cost you"); the intro paragraph moved under the Program heading. Asset links carry `?v=N`, bump N when CSS/JS change.

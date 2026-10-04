@@ -1,0 +1,62 @@
+.match { padding-block: clamp(36px, 6vw, 72px) 96px; }
+.match-title { font-size: clamp(2rem, 5vw, 3.25rem); text-align: left; margin: 0; max-width: 24ch; }
+.match-lede { max-width: 60ch; margin-top: 16px; color: #3d3731; }
+
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; align-items: start; }
+.match-grid[hidden], .how[hidden] { display: none; }
+.match-grid h2 { font-size: 1.5rem; margin-bottom: 16px; }
+
+.picks, .people { display: grid; gap: 8px; }
+.picks li, .people li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.picks li { border-color: var(--accent); }
+.picks .rank { font-family: var(--display); font-weight: 700; font-size: 1.5rem; width: 1.2em; color: var(--accent); }
+.picks .name, .people .name { flex: 1; font-weight: 500; }
+.picks-empty { color: var(--muted); padding: 14px 0; }
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.icon-btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.icon-btn:disabled { opacity: 0.3; cursor: default; }
+
+#search {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border: 1px solid #c9c0b2;
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+}
+.people { max-height: 60vh; overflow-y: auto; padding-right: 4px; }
+
+#submit { margin-top: 20px; border: 0; font: inherit; font-weight: 600; cursor: pointer; }
+#submit:disabled { opacity: 0.4; cursor: default; transform: none; }
+.match-msg { min-height: 1.5em; margin-top: 14px; color: var(--green); font-weight: 500; }
+.match-msg.is-error { color: var(--red); }
+
+.how { max-width: 60ch; margin-top: 56px; color: #3d3731; }
+.how summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+.how p { margin-top: 12px; }
+
+@media (max-width: 760px) {
+  .match-grid { grid-template-columns: 1fr; gap: 36px; }
+  .people { max-height: none; }
+}

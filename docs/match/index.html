@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Cofounder matching · The Draper Fellowship</title>
+  <meta name="theme-color" content="#14110f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314110f'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-style='italic' text-anchor='middle' fill='%23f6f1e9'%3ED%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=25">
+  <link rel="stylesheet" href="match.css?v=1">
+  <script src="match.js?v=1" defer></script>
+</head>
+<body>
+
+  <header class="bar dark">
+    <div class="nav wrap">
+      <a class="wordmark" href="../">The Draper Fellowship</a>
+    </div>
+  </header>
+
+  <!-- data-form / data-entry: the Google Form that stores rankings -->
+  <main class="match wrap" data-form="1FAIpQLSfKG64lp2JRfSBLvQhcKNfRNk2JUpusC7Sj-TjBCpWRB7tJ8A" data-entry="751092105">
+    <p class="eyebrow">Cofounder matching</p>
+    <h1 class="match-title">Loading&hellip;</h1>
+    <p class="match-lede"></p>
+
+    <div class="match-grid" hidden>
+      <section aria-labelledby="picks-h">
+        <h2 id="picks-h">Your ranking</h2>
+        <ol class="picks"></ol>
+        <p class="picks-empty">Nobody yet. Add people from the list.</p>
+        <button class="btn" type="button" id="submit" disabled>Submit ranking</button>
+        <p class="match-msg" aria-live="polite"></p>
+      </section>
+      <section aria-labelledby="people-h">
+        <h2 id="people-h">Everyone</h2>
+        <label class="sr-only" for="search">Search names</label>
+        <input id="search" type="search" placeholder="Search names" autocomplete="off">
+        <ul class="people"></ul>
+      </section>
+    </div>
+
+    <details class="how" hidden>
+      <summary>How pairs are decided</summary>
+      <p>Each possible pair is scored from both sides equally: a mutual first choice is the best score, then first and second, and so on. Mutual first choices are always paired. Everyone else is paired so that the group as a whole gets the best total score, which avoids leaving the last few people with whoever is left. Your ranking is private to the organizers.</p>
+    </details>
+  </main>
+
+</body>
+</html>
