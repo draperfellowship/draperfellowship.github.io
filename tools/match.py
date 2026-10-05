@@ -9,7 +9,10 @@ recommended pairings, every possible pair with its score, and notes.
 
 Method: a pair's score is rankA(B)^2 + rankB(A)^2 (lower is better, symmetric). Lists can be any length;
 someone left off a list counts as rank N (the group size), worse than any ranked position.
-Mutual first choices are locked. The rest are paired so the sum of all pair scores is as small as possible
+Mutual preference comes first: among pairs where both people ranked each other, the best-scoring pair is
+locked, those two are removed, and this repeats (ties at the same score are resolved so that as many of the
+tied pairs as possible are kept). A mutual pair is never split to improve the group total.
+Whoever remains has no mutual option left; they are paired so the sum of their scores is as small as possible
 (minimum-weight matching). With an odd count, the person left over joins the pair where they add the least.
 """
 import argparse, csv, json
@@ -48,8 +51,17 @@ rank = lambda a, b: prefs.get(a, []).index(b) + 1 if b in prefs.get(a, []) else 
 cost = lambda a, b: rank(a, b) ** 2 + rank(b, a) ** 2
 label = lambda r: "not ranked" if r == UNRANKED else r
 
-locked = [(a, b) for a in ids for b in ids if a < b and rank(a, b) == 1 and rank(b, a) == 1]
-taken = {p for pair in locked for p in pair}
+mutual = lambda a, b: rank(a, b) < UNRANKED and rank(b, a) < UNRANKED
+levels = {}
+for i, a in enumerate(ids):
+    for b in ids[i + 1:]:
+        if mutual(a, b):
+            levels.setdefault(cost(a, b), []).append((a, b))
+locked, taken = [], set()
+for score in sorted(levels):
+    T = nx.Graph((a, b) for a, b in levels[score] if a not in taken and b not in taken)
+    for a, b in sorted(tuple(sorted(e)) for e in nx.max_weight_matching(T, maxcardinality=True)):
+        locked.append((a, b)); taken.update((a, b))
 rest = [p for p in ids if p not in taken]
 
 G = nx.Graph()
@@ -83,7 +95,7 @@ for n, g in enumerate(groups, 1):
     for i, a in enumerate(g):
         for b in g[i + 1:]:
             rec.append([n, name[a], name[b], label(rank(a, b)), label(rank(b, a)), cost(a, b),
-                        "mutual first choice" if (a, b) in locked else ""])
+                        "mutual" if mutual(a, b) else "not mutual"])
 sheet(wb.active, "Recommended pairings",
       ["Group", "Person A", "Person B", "A ranked B", "B ranked A", "Score (lower is better)", "Note"], rec, [8, 26, 26, 12, 12, 22, 22])
 
@@ -93,15 +105,15 @@ sheet(wb.create_sheet(), "All pair scores",
       [[name[a], name[b], label(rank(a, b)), label(rank(b, a)), c, "yes" if frozenset((a, b)) in together else ""] for c, a, b in allp],
       [26, 26, 12, 12, 22, 14])
 
-notes = [["People", len(ids)], ["Submitted", len(prefs)], ["Mutual first-choice pairs locked", len(locked)],
+notes = [["People", len(ids)], ["Submitted", len(prefs)], ["Mutual pairs (both ranked each other)", len(locked)],
          ["Total score of recommended pairings", sum(group_cost(g) for g in groups)],
          ["Did not submit", ", ".join(missing) or "none"],
          ["Pairs who would both prefer each other over their assigned partner (review by hand)",
           "; ".join(f"{name[a]} & {name[b]}" for a, b in blocking) or "none"],
          ["Score", "A's rank of B squared plus B's rank of A squared. 'Not ranked' counts as rank %d." % UNRANKED],
-         ["Method", "Mutual first choices are paired. Everyone else is paired so the total score across all pairs is the lowest possible."]]
+         ["Method", "Pairs where both people ranked each other are locked best score first; a mutual pair is never split to help the group total. Anyone left over is paired to give the lowest total score among them."]]
 sheet(wb.create_sheet(), "Notes", ["Item", "Value"], notes, [70, 90])
 wb.save(args.out)
 
 print(f"wrote {args.out}: {len(groups)} groups, {len(allp)} possible pairs scored")
-print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual-first pairs locked, {len(blocking)} pairs flagged for review, {len(missing)} did not submit")
+print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual pairs locked, {len(blocking)} pairs flagged for review, {len(missing)} did not submit")
