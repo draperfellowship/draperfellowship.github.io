@@ -283,3 +283,9 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - User asked why links were long: the first 43 characters were the shared 256-bit event key. Now the link carries an 11-character shared secret (AES key = its SHA-256) and an 8-character personal code: 63 characters total, down from 108. All links regenerated; none had been sent.
 - Greeting removed at the user's request; heading is the same for everyone. A small "Submitting as NAME" line remains so a forwarded or mixed-up link is noticed.
 - Email automation: discussed, not built; user said not to send anything.
+
+## 2026-10-04: Link opened via shell failed (PR #32)
+
+- Symptom: a link I opened for the user with `open "$(... | cut ...)"` showed "This link is not valid".
+- Cause: `links.csv` had CRLF line endings (Python csv default); the shell extraction kept the trailing CR, which `open` percent-encoded as `%0D` onto the personal code. The stored links were correct (30/30 in the browser check, because Chrome strips raw CR from URLs).
+- Fix: page decodes and trims the fragment before splitting; `make_links.py` writes LF line endings. Tokens and secret unchanged, so links are the same.

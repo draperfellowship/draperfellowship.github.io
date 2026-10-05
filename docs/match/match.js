@@ -32,7 +32,8 @@ async function loadRoster(secret) {
 }
 
 async function start() {
-  const [secret, token] = location.hash.slice(1).split('.');
+  // tolerate whitespace picked up when a link is copied (it arrives percent-encoded, e.g. %0D or %20)
+  const [secret, token] = decodeURIComponent(location.hash.slice(1)).trim().split('.');
   if (!secret || !token) return stop('Use your personal link', 'This page opens from the link in your email from the Draper Fellowship team.');
 
   let roster;

@@ -53,9 +53,9 @@ blob = iv + AESGCM(key).encrypt(iv, json.dumps(roster).encode(), None)
 open("docs/match/roster.enc", "w").write(base64.b64encode(blob).decode())
 
 with open("private/roster.csv", "w", newline="") as f:
-    w = csv.DictWriter(f, ["id", "name", "email", "token"]); w.writeheader(); w.writerows(people)
+    w = csv.DictWriter(f, ["id", "name", "email", "token"], lineterminator="\n"); w.writeheader(); w.writerows(people)
 with open("private/links.csv", "w", newline="") as f:
-    w = csv.writer(f); w.writerow(["name", "email", "link"])
+    w = csv.writer(f, lineterminator="\n"); w.writerow(["name", "email", "link"])
     for p in people:
         w.writerow([p["name"], p["email"], f"{args.base}#{secret}.{p['token']}"])
 
