@@ -320,3 +320,8 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - User asked whether a fair rule for loops exists. In a loop every candidate pair is equally good for its members, so the only difference is the fate of whoever is left out. `match.py` now enumerates each way of keeping the most tied pairs, plays the rest of the matching out (recursive `settle`), and uses the option with the lowest final total. Reported in Notes for information.
 - If options are exactly equal (a fully symmetric loop) no ranking-based rule can separate them; Notes lists them under "COIN FLIP NEEDED" and the first is used provisionally.
 - Tested: backup on either side of a 3-loop picks the pair that frees the person with the backup; symmetric 3-loop and 4-loop report a coin flip; earlier tie cases and a 30-person random run unchanged.
+
+## 2026-10-04: "How pairs are decided" page (PR #38)
+
+- `docs/match/how.html`: public explainer with the scoring table, the three-step pairing loop, the shared-person tie rule in one sentence, and what it means for the ranker. Loops and odd counts deliberately left out per the user. Linked from the ranking page (opens in a new tab so unsaved picks are not lost); replaces the inline `<details>` blurb.
+- Caught before shipping: I had written that a longer list "cannot hurt your top choices". False under mutual-first: adding an 8th choice who ranked you 1st (score 65) can beat you with your 2nd choice who ranked you 8th (68). Replaced with "anyone on it is someone you could end up paired with".
