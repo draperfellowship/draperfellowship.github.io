@@ -7,6 +7,7 @@ Input CSV needs `name` and `email` columns. Writes:
   docs/match/roster.enc   encrypted roster the page decrypts (safe to commit)
   private/roster.csv      id, name, email, token (keep private)
   private/links.csv       name, email, link (for the mail merge)
+  private/test_link.txt   link for a hidden test user (id 0): can submit, never listed, never matched
 Re-running keeps existing tokens and the event secret, so links already sent stay valid.
 """
 import argparse, base64, csv, hashlib, json, os, secrets
@@ -32,6 +33,8 @@ known = {}
 if os.path.exists("private/roster.csv"):
     known = {r["email"].lower(): r for r in csv.DictReader(open("private/roster.csv"))}
 
+TEST = "test-user"
+test_token = known[TEST]["token"] if TEST in known else secrets.token_urlsafe(6)
 people, next_id = [], 1 + max([int(r["id"]) for r in known.values()], default=0)
 for row in csv.DictReader(open(args.attendees)):
     name, email = row["name"].strip(), row["email"].strip().lower()
@@ -43,9 +46,10 @@ for row in csv.DictReader(open(args.attendees)):
         pid, token, next_id = next_id, secrets.token_urlsafe(6), next_id + 1
     people.append({"id": pid, "name": name, "email": email, "token": token})
 
+people.append({"id": 0, "name": "Test User", "email": TEST, "token": test_token})
 roster = {
     "min": args.min,
-    "people": [{"id": p["id"], "name": p["name"]} for p in people],
+    "people": [{"id": p["id"], "name": p["name"], **({"hidden": True} if p["id"] == 0 else {})} for p in people],
     "who": {hashlib.sha256(p["token"].encode()).hexdigest(): p["id"] for p in people},
 }
 iv = secrets.token_bytes(12)
@@ -57,6 +61,8 @@ with open("private/roster.csv", "w", newline="") as f:
 with open("private/links.csv", "w", newline="") as f:
     w = csv.writer(f, lineterminator="\n"); w.writerow(["name", "email", "link"])
     for p in people:
-        w.writerow([p["name"], p["email"], f"{args.base}#{secret}.{p['token']}"])
+        if p["id"]:
+            w.writerow([p["name"], p["email"], f"{args.base}#{secret}.{p['token']}"])
+open("private/test_link.txt", "w").write(f"{args.base}#{secret}.{test_token}\n")
 
-print(f"{len(people)} attendees -> docs/match/roster.enc, private/roster.csv, private/links.csv")
+print(f"{len(people) - 1} attendees -> docs/match/roster.enc, private/roster.csv, private/links.csv")

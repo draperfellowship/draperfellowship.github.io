@@ -296,3 +296,8 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - Roster field `k` renamed `min`. Page blocks submit under 5 and says how many more are needed.
 - `match.py`: lists are no longer truncated; unranked now scores as rank N (group size, 30 here) instead of 7, so any ranked position beats being left off. Tested on 30 people with list lengths 5 to 29.
 - Note: on fully random test rankings the optimal matching still flagged 3 "would rather be together" pairs; real post-event rankings are far more mutual, and the script lists any for manual review.
+
+## 2026-10-04: Spreadsheet output and hidden test user (PR #34)
+
+- `tools/match.py` now writes `private/matching_results.xlsx` (sheets: Recommended pairings; All pair scores, every possible pair sorted best first with a Recommended flag; Notes with non-submitters, pairs flagged for review, and the method). It only reads and writes local files; nothing is sent anywhere.
+- Hidden test user (id 0, "Test User"): link in `private/test_link.txt`. It can submit like anyone, is never shown in other people's lists (`hidden` flag in the roster), is left out of `links.csv`, and is ignored by `match.py`.
