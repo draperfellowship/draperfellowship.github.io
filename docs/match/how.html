@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css?v=25">
-  <link rel="stylesheet" href="match.css?v=3">
+  <link rel="stylesheet" href="match.css?v=4">
   </head>
 <body>
 
@@ -24,34 +24,46 @@
   <main class="match explain wrap">
     <p class="eyebrow">Cofounder matching</p>
     <h1 class="match-title">How pairs are decided</h1>
-    <p class="match-lede">Two steps: every possible pair gets a score from both people&rsquo;s rankings, then pairs are formed starting from the best score.</p>
+    <p class="match-lede">Every possible pair gets a score from both people&rsquo;s rankings. Pairs are then formed starting from the best score.</p>
 
-    <h2>1. How a pair is scored</h2>
-    <p>You rank the people you would want to build with, best fit first. For any two people, take where each ranked the other, square both numbers and add them. <strong>Lower is better</strong>, and both sides count equally.</p>
-    <table>
-      <thead><tr><th>You ranked them</th><th>They ranked you</th><th>Score</th></tr></thead>
-      <tbody>
-        <tr><td>1st</td><td>1st</td><td>1 + 1 = <strong>2</strong></td></tr>
-        <tr><td>2nd</td><td>4th</td><td>4 + 16 = <strong>20</strong></td></tr>
-      </tbody>
-    </table>
-    <p>If someone is not on your list at all, that counts as worse than any ranked position.</p>
+    <section class="part">
+      <p class="label">01 &middot; Scoring</p>
+      <div>
+        <h2>How a pair is scored</h2>
+        <p>You rank the people you would want to build with, best fit first. For any two people, take where each ranked the other, square both numbers and add them. <strong>Lower is better</strong>, and both sides count equally.</p>
+        <div class="sums">
+          <div><span class="n">2</span><span class="who">1st and 1st</span><span class="sum">1 + 1</span></div>
+          <div><span class="n">20</span><span class="who">2nd and 4th</span><span class="sum">4 + 16</span></div>
+        </div>
+        <p>If someone is not on your list at all, that counts as worse than any ranked position.</p>
+      </div>
+    </section>
 
-    <h2>2. How pairs are formed</h2>
-    <ol class="steps">
-      <li>Look at every pair where <strong>both</strong> people ranked each other.</li>
-      <li>Pair up the two with the best score. They are now matched and leave the pool.</li>
-      <li>Repeat with everyone who is left, until no such pairs remain.</li>
-    </ol>
-    <p>Your score with another person depends only on how the two of you ranked each other. How anyone else ranked anyone else never changes it. Other people&rsquo;s choices matter in just one way: someone you ranked may be matched first with a person they score better with.</p>
-    <p>Anyone left at the end, with nobody remaining who ranked them back, is paired with the best available fit.</p>
+    <section class="part">
+      <p class="label">02 &middot; Pairing</p>
+      <div>
+        <h2>How pairs are formed</h2>
+        <ol class="steps">
+          <li>Look at every pair where <strong>both</strong> people ranked each other.</li>
+          <li>Pair up the two with the best score. They are now matched and leave the pool.</li>
+          <li>Repeat with everyone who is left, until no such pairs remain.</li>
+        </ol>
+        <p>Your score with another person depends only on how the two of you ranked each other. How anyone else ranked anyone else never changes it. Other people&rsquo;s choices matter in just one way: someone you ranked may be matched first with a person they score better with.</p>
+        <p>Anyone left at the end, with nobody remaining who ranked them back, is paired with the best available fit.</p>
+      </div>
+    </section>
 
-    <h2>What this means for you</h2>
-    <ul class="checks">
-      <li>Rank honestly, in your real order of preference.</li>
-      <li>Rank everyone you would be glad to build with. A longer list gives you more chances at a mutual match, and anyone on it is someone you could end up paired with.</li>
-      <li>Your ranking is seen only by the organizers, who review the final pairings.</li>
-    </ul>
+    <section class="part">
+      <p class="label">03 &middot; For you</p>
+      <div>
+        <h2>What this means for you</h2>
+        <ul class="plain">
+          <li>Rank honestly, in your real order of preference.</li>
+          <li>Rank everyone you would be glad to build with. A longer list gives you more chances at a mutual match, and anyone on it is someone you could end up paired with.</li>
+          <li>Your ranking is seen only by the organizers, who review the final pairings.</li>
+        </ul>
+      </div>
+    </section>
   </main>
 
 </body>

@@ -330,3 +330,10 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 
 - Per the user: examples cut to two (1st+1st = 2, 2nd+4th = 20); "Squaring rewards balance" and the closing "close this tab" line removed.
 - User asked to say that other people's rankings of other people never affect you. That is true of the score but not of the outcome (someone you ranked can be matched first with a person they score better with), so the page states both: the score depends only on the two of you; others matter only through who is still available.
+
+## 2026-10-05: Ranking page and explainer redesigned (PR #40)
+
+- User found both pages "blocky and clunky and LLM-looking". Causes: every row a white rounded card, bordered square icon buttons, pill search field, numbered circles, boxed table, checkmark list.
+- Now in the landing page's language: hairline rules and type only. Ranking page: one heavy rule under the header, small-caps column labels, large condensed rank numerals, numbered empty slots up to the minimum, borderless controls, underlined search, names as full-row buttons in two columns with an "Add" hint on hover, left column sticky on desktop. Explainer: label-left sections (01 Scoring, 02 Pairing, 03 For you), the two examples as large numerals, steps and bullets as ruled lines.
+- Behavior unchanged; the saved message is now "Saved. N people ranked." Verified flow and no horizontal overflow at 1280 and 390.
+- Hook note: the branch-push guard scans the whole command text, so a PR body or log line that mentions the default branch's name after a push trips it. Keep the push in its own command.

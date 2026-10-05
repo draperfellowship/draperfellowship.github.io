@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css?v=25">
-  <link rel="stylesheet" href="match.css?v=3">
-  <script src="match.js?v=5" defer></script>
+  <link rel="stylesheet" href="match.css?v=4">
+  <script src="match.js?v=6" defer></script>
 </head>
 <body>
 
@@ -30,17 +30,18 @@
     <p class="match-as"></p>
 
     <div class="match-grid" hidden>
-      <section aria-labelledby="picks-h">
+      <section class="mine" aria-labelledby="picks-h">
         <h2 id="picks-h">Your ranking</h2>
         <ol class="picks"></ol>
-        <p class="picks-empty">Nobody yet. Add people from the list.</p>
-        <button class="btn" type="button" id="submit" disabled>Submit ranking</button>
-        <p class="match-msg" aria-live="polite"></p>
+        <div class="actions">
+          <button class="btn" type="button" id="submit" disabled>Submit ranking</button>
+          <p class="match-msg" aria-live="polite"></p>
+        </div>
       </section>
       <section aria-labelledby="people-h">
         <h2 id="people-h">Everyone</h2>
         <label class="sr-only" for="search">Search names</label>
-        <input id="search" type="search" placeholder="Search names" autocomplete="off">
+        <input id="search" type="search" placeholder="Search by name" autocomplete="off">
         <ul class="people"></ul>
       </section>
     </div>
