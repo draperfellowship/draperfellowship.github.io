@@ -17,11 +17,11 @@ Single-page static site for The Draper Fellowship, a fall-quarter startup accele
 - ✅ Hero now shows the deadline-passed message instead of the countdown (since 2026-09-28).
 
 ## What's NOT in place
-- 🟡 Matching is built but not open: needs `private/attendees.csv` (name, email), then links emailed by the user.
+- 🟡 Matching is open for 30 attendees (roster loaded 2026-10-04) but no links have been sent. `private/links.csv` has name, email, link. The user said not to send any emails; distribution is theirs.
 - ❌ Custom domain, contact email, photos, social preview image.
 
 ## What's being worked on right now (and why)
-Waiting on the attendee list to generate personal matching links before the Oct 7 kickoff. Unconfirmed defaults: pairs, top 5, odd person joins a trio.
+Waiting for the user to distribute the matching links, then for submissions after the Oct 7 session; then run `tools/match.py`. Unconfirmed defaults: pairs, top 5.
 
 ## Most recent decisions (sticky context)
 - 2026-09-22: Renamed to "The Draper Fellowship"; org and repo renamed to `draperfellowship`. Hero rebuilt as a centered countdown per the organizers' mock (headline now "costs you" not "will cost you"); the intro paragraph moved under the Program heading. Asset links carry `?v=N`, bump N when CSS/JS change.
