@@ -10,8 +10,10 @@ recommended pairings, every possible pair with its score, and notes.
 Method: a pair's score is rankA(B)^2 + rankB(A)^2 (lower is better, symmetric). Lists can be any length;
 someone left off a list counts as rank N (the group size), worse than any ranked position.
 Mutual preference comes first: among pairs where both people ranked each other, the best-scoring pair is
-locked, those two are removed, and this repeats (ties at the same score are resolved so that as many of the
-tied pairs as possible are kept). A mutual pair is never split to improve the group total.
+locked, those two are removed, and this repeats. A mutual pair is never split to improve the group total.
+Ties at one score: each person points at the tied partner they ranked highest, and two people pointing at each
+other are paired (so a person shared by two tied pairs decides between them). If nobody points back (a loop),
+as many tied pairs as possible are kept and the tie is reported for manual review.
 Whoever remains has no mutual option left; they are paired so the sum of their scores is as small as possible
 (minimum-weight matching). With an odd count, the person left over joins the pair where they add the least.
 """
@@ -57,11 +59,21 @@ for i, a in enumerate(ids):
     for b in ids[i + 1:]:
         if mutual(a, b):
             levels.setdefault(cost(a, b), []).append((a, b))
-locked, taken = [], set()
+locked, taken, arbitrary = [], set(), []
 for score in sorted(levels):
-    T = nx.Graph((a, b) for a, b in levels[score] if a not in taken and b not in taken)
-    for a, b in sorted(tuple(sorted(e)) for e in nx.max_weight_matching(T, maxcardinality=True)):
-        locked.append((a, b)); taken.update((a, b))
+    tied = [(a, b) for a, b in levels[score] if a not in taken and b not in taken]
+    while tied:
+        options = {}
+        for a, b in tied:
+            options.setdefault(a, []).append(b); options.setdefault(b, []).append(a)
+        points = {p: min(qs, key=lambda q: rank(p, q)) for p, qs in options.items()}
+        agreed = sorted({tuple(sorted((p, q))) for p, q in points.items() if points[q] == p})
+        if not agreed:  # a loop: no ranking can settle it
+            agreed = sorted(tuple(sorted(e)) for e in nx.max_weight_matching(nx.Graph(tied), maxcardinality=True))
+            arbitrary.append((score, [p for p in tied if tuple(sorted(p)) not in agreed], agreed))
+        for a, b in agreed:
+            locked.append((a, b)); taken.update((a, b))
+        tied = [(a, b) for a, b in tied if a not in taken and b not in taken]
 rest = [p for p in ids if p not in taken]
 
 G = nx.Graph()
@@ -110,10 +122,13 @@ notes = [["People", len(ids)], ["Submitted", len(prefs)], ["Mutual pairs (both r
          ["Did not submit", ", ".join(missing) or "none"],
          ["Pairs who would both prefer each other over their assigned partner (review by hand)",
           "; ".join(f"{name[a]} & {name[b]}" for a, b in blocking) or "none"],
+         ["Ties no ranking could settle (a loop); the pairs kept were chosen arbitrarily, review by hand",
+          "; ".join(f"score {s}: kept {', '.join(name[a] + ' & ' + name[b] for a, b in kept)}; passed over {', '.join(name[a] + ' & ' + name[b] for a, b in lost)}"
+                    for s, lost, kept in arbitrary) or "none"],
          ["Score", "A's rank of B squared plus B's rank of A squared. 'Not ranked' counts as rank %d." % UNRANKED],
          ["Method", "Pairs where both people ranked each other are locked best score first; a mutual pair is never split to help the group total. Anyone left over is paired to give the lowest total score among them."]]
 sheet(wb.create_sheet(), "Notes", ["Item", "Value"], notes, [70, 90])
 wb.save(args.out)
 
 print(f"wrote {args.out}: {len(groups)} groups, {len(allp)} possible pairs scored")
-print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual pairs locked, {len(blocking)} pairs flagged for review, {len(missing)} did not submit")
+print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual pairs locked, {len(blocking)} pairs flagged for review, {len(arbitrary)} arbitrary ties, {len(missing)} did not submit")

@@ -308,3 +308,9 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - Accepted cost: the last people matched can get weaker pairings than a group-optimal method would give them. Mitigated by the minimum of 5 and the advice to rank everyone they would consider.
 - Verified on random rankings for 30 people: every locked mutual pair was the best available at the time; none left unmatched; everyone placed once. The rank-based "would both prefer each other" flag can still fire (one person can be claimed by someone who ranked them higher) and stays in the Notes sheet.
 - Page explainer text updated to match.
+
+## 2026-10-04: Tie-break rule (PR #36)
+
+- User asked about equal scores, e.g. A ranks B 1st, B ranks A 2nd, B ranks C 1st, C ranks B 2nd (both pairs score 5). Previous code picked arbitrarily. New rule within one score level: each person points at the tied partner they ranked highest; two people pointing at each other are paired; repeat. A person shared by two tied pairs therefore decides, and since nobody can rank two people equally the choice is always strict.
+- The only case rankings cannot settle is a loop (A prefers B, B prefers C, C prefers A, all tied). Then as many tied pairs as possible are kept and the tie is listed in the Notes sheet for manual review.
+- Tested: the user's case (B+C forms), a chain (C+D then A+B), a loop (one pair kept, flagged), 1st+7th vs 5th+5th at score 50 (shared person picks the 5th), and a 30-person random run.
