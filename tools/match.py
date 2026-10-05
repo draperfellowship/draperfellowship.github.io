@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Pair founders from their rankings.
 
-    python tools/match.py private/responses.csv [--k 5]
+    python tools/match.py private/responses.csv
 
 responses.csv is the Google Sheet export (Timestamp, Response). Each Response is JSON {"t": token, "c": [ids]}.
 Needs private/roster.csv from make_links.py. Writes private/pairs.csv and prints a report.
 
-Method: a pair's cost is rankA(B)^2 + rankB(A)^2, symmetric, with unranked counted as rank k+2.
+Method: a pair's cost is rankA(B)^2 + rankB(A)^2, symmetric. Lists can be any length; someone left off
+a list counts as rank N (the group size), which is worse than any ranked position.
 Mutual first choices are locked. The rest are paired to minimise total cost (minimum-weight matching).
 With an odd count, the person left over joins the pair where they add the least cost.
 """
@@ -15,7 +16,6 @@ import networkx as nx
 
 ap = argparse.ArgumentParser()
 ap.add_argument("responses")
-ap.add_argument("--k", type=int, default=5)
 args = ap.parse_args()
 
 roster = list(csv.DictReader(open("private/roster.csv")))
@@ -34,9 +34,9 @@ for row in csv.reader(open(args.responses)):
     for c in d.get("c", []):
         if isinstance(c, int) and c in name and c != me and c not in seen:
             seen.add(c); clean.append(c)
-    prefs[me] = clean[: args.k]
+    prefs[me] = clean
 
-UNRANKED = args.k + 2
+UNRANKED = len(ids)
 rank = lambda a, b: prefs.get(a, []).index(b) + 1 if b in prefs.get(a, []) else UNRANKED
 cost = lambda a, b: rank(a, b) ** 2 + rank(b, a) ** 2
 
