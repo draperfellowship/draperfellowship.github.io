@@ -314,3 +314,9 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - User asked about equal scores, e.g. A ranks B 1st, B ranks A 2nd, B ranks C 1st, C ranks B 2nd (both pairs score 5). Previous code picked arbitrarily. New rule within one score level: each person points at the tied partner they ranked highest; two people pointing at each other are paired; repeat. A person shared by two tied pairs therefore decides, and since nobody can rank two people equally the choice is always strict.
 - The only case rankings cannot settle is a loop (A prefers B, B prefers C, C prefers A, all tied). Then as many tied pairs as possible are kept and the tie is listed in the Notes sheet for manual review.
 - Tested: the user's case (B+C forms), a chain (C+D then A+B), a loop (one pair kept, flagged), 1st+7th vs 5th+5th at score 50 (shared person picks the 5th), and a 30-person random run.
+
+## 2026-10-04: Loops resolved by least harm (PR #37)
+
+- User asked whether a fair rule for loops exists. In a loop every candidate pair is equally good for its members, so the only difference is the fate of whoever is left out. `match.py` now enumerates each way of keeping the most tied pairs, plays the rest of the matching out (recursive `settle`), and uses the option with the lowest final total. Reported in Notes for information.
+- If options are exactly equal (a fully symmetric loop) no ranking-based rule can separate them; Notes lists them under "COIN FLIP NEEDED" and the first is used provisionally.
+- Tested: backup on either side of a 3-loop picks the pair that frees the person with the backup; symmetric 3-loop and 4-loop report a coin flip; earlier tie cases and a 30-person random run unchanged.
