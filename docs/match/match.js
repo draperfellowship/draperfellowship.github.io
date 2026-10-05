@@ -8,7 +8,6 @@ const lede = document.querySelector('.match-lede');
 const grid = document.querySelector('.match-grid');
 const picksEl = document.querySelector('.picks');
 const peopleEl = document.querySelector('.people');
-const emptyEl = document.querySelector('.picks-empty');
 const search = document.querySelector('#search');
 const submit = document.querySelector('#submit');
 const msg = document.querySelector('.match-msg');
@@ -60,7 +59,7 @@ async function start() {
 
   const button = (label, text, onClick, disabled) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'icon-btn'; b.textContent = text; b.setAttribute('aria-label', label); b.disabled = !!disabled;
+    b.type = 'button'; b.className = 'ctl'; b.textContent = text; b.setAttribute('aria-label', label); b.disabled = !!disabled;
     b.addEventListener('click', onClick);
     return b;
   };
@@ -77,17 +76,26 @@ async function start() {
         button(`Remove ${byId.get(id).name}`, '×', () => { picks.splice(i, 1); render(); }));
       return li;
     }));
-    emptyEl.hidden = picks.length > 0;
+    // empty numbered slots up to the minimum, so the target is visible before anything is picked
+    for (let i = picks.length; i < min; i++) {
+      const li = Object.assign(document.createElement('li'), { className: 'slot' });
+      li.append(Object.assign(document.createElement('span'), { className: 'rank', textContent: i + 1 }),
+        Object.assign(document.createElement('span'), { className: 'name', textContent: i === picks.length ? 'Choose from the list' : '' }));
+      picksEl.append(li);
+    }
     const q = search.value.trim().toLowerCase();
     peopleEl.replaceChildren(...others.filter(p => !picks.includes(p.id) && p.name.toLowerCase().includes(q)).map(p => {
       const li = document.createElement('li');
-      const name = Object.assign(document.createElement('span'), { className: 'name', textContent: p.name });
-      li.append(name, button(`Add ${p.name}`, '+', () => { picks.push(p.id); render(); }));
+      const row = Object.assign(document.createElement('button'), { type: 'button', className: 'person' });
+      row.append(Object.assign(document.createElement('span'), { className: 'name', textContent: p.name }),
+        Object.assign(document.createElement('span'), { className: 'add', textContent: 'Add' }));
+      row.addEventListener('click', () => { picks.push(p.id); render(); });
+      li.append(row);
       return li;
     }));
     submit.disabled = picks.length < min;
     msg.textContent = picks.length < min ? `Add ${min - picks.length} more to submit.` : '';
-    msg.classList.remove('is-error');
+    msg.classList.remove('is-error', 'is-saved');
   }
 
   search.addEventListener('input', render);
@@ -99,7 +107,8 @@ async function start() {
       // no-cors: the response is opaque, so a completed request is treated as saved
       await fetch(`https://docs.google.com/forms/d/e/${main.dataset.form}/formResponse`, { method: 'POST', mode: 'no-cors', body });
       try { localStorage.setItem(storeKey, JSON.stringify(picks)); } catch (e) {}
-      msg.textContent = `Saved: ${picks.map((id, i) => `${i + 1}. ${byId.get(id).name}`).join(', ')}.`;
+      msg.textContent = `Saved. ${picks.length} people ranked.`;
+      msg.classList.add('is-saved');
     } catch (e) {
       msg.textContent = 'Could not save. Check your connection and try again.';
       msg.classList.add('is-error');
