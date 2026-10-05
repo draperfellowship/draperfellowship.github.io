@@ -270,3 +270,10 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 **Tested:** 21 dummy attendees with random rankings plus engineered cases (mutual #1 locked, resubmission overrides, forged token and junk rows dropped, self and duplicate picks stripped, odd count gives one trio, two non-submitters listed). Browser test over CDP: no link, wrong token and wrong key all refused; valid link greets by first name, caps at 5, reorders, searches, posts the right payload, restores on reload; no horizontal overflow at 390px. Dummy data moved to the trash afterwards (a user hook blocks `rm` with force flags; use `trash`).
 
 **Not done:** real attendee list not yet provided; emailing the links is the user's step.
+
+## 2026-10-04: Matching roster loaded (PR #30)
+
+- User supplied a 30-person attendee CSV (moved to `private/attendees_source.csv`; `private/attendees.csv` holds name and email only). `make_links.py` produced `docs/match/roster.enc` (committed) and `private/links.csv` (30 unique links, not committed).
+- All 30 links checked in a headless browser: each greets the right first name and lists the other 29.
+- **No emails were sent; the user explicitly said not to.** Sending the links is the user's step.
+- 30 is even, so no trio unless someone drops out.
