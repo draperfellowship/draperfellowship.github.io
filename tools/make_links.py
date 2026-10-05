@@ -7,7 +7,7 @@ Input CSV needs `name` and `email` columns. Writes:
   docs/match/roster.enc   encrypted roster the page decrypts (safe to commit)
   private/roster.csv      id, name, email, token (keep private)
   private/links.csv       name, email, link (for the mail merge)
-Re-running keeps existing tokens and the event key, so links already sent stay valid.
+Re-running keeps existing tokens and the event secret, so links already sent stay valid.
 """
 import argparse, base64, csv, hashlib, json, os, secrets
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -18,15 +18,15 @@ ap.add_argument("--k", type=int, default=5)
 ap.add_argument("--base", default="https://draperfellowship.github.io/match/")
 args = ap.parse_args()
 
-b64 = lambda b: base64.urlsafe_b64encode(b).decode().rstrip("=")
-
 os.makedirs("private", exist_ok=True)
-key_path = "private/event_key.txt"
-if os.path.exists(key_path):
-    key = base64.urlsafe_b64decode(open(key_path).read().strip() + "==")
+# Short secret in the link; the AES key is its SHA-256. ~64 bits is ample for a list of names.
+secret_path = "private/event_secret.txt"
+if os.path.exists(secret_path):
+    secret = open(secret_path).read().strip()
 else:
-    key = secrets.token_bytes(32)
-    open(key_path, "w").write(b64(key))
+    secret = secrets.token_urlsafe(8)
+    open(secret_path, "w").write(secret)
+key = hashlib.sha256(secret.encode()).digest()
 
 known = {}
 if os.path.exists("private/roster.csv"):
@@ -40,7 +40,7 @@ for row in csv.DictReader(open(args.attendees)):
     if email in known:
         pid, token = int(known[email]["id"]), known[email]["token"]
     else:
-        pid, token, next_id = next_id, secrets.token_urlsafe(12), next_id + 1
+        pid, token, next_id = next_id, secrets.token_urlsafe(6), next_id + 1
     people.append({"id": pid, "name": name, "email": email, "token": token})
 
 roster = {
@@ -57,6 +57,6 @@ with open("private/roster.csv", "w", newline="") as f:
 with open("private/links.csv", "w", newline="") as f:
     w = csv.writer(f); w.writerow(["name", "email", "link"])
     for p in people:
-        w.writerow([p["name"], p["email"], f"{args.base}#{b64(key)}.{p['token']}"])
+        w.writerow([p["name"], p["email"], f"{args.base}#{secret}.{p['token']}"])
 
 print(f"{len(people)} attendees -> docs/match/roster.enc, private/roster.csv, private/links.csv")

@@ -1,6 +1,6 @@
-// Personal link format: /match/#<event key>.<personal token>
-// The roster is stored encrypted (roster.enc); the key exists only in the emailed links, so names are
-// not readable from the public site. The token identifies the visitor; only its hash is in the roster.
+// Personal link format: /match/#<event secret>.<personal token>
+// The roster is stored encrypted (roster.enc) with a key derived from the event secret, which exists only
+// in the emailed links, so names are not readable from the public site. The token identifies the visitor; only its hash is in the roster.
 
 const main = document.querySelector('.match');
 const title = document.querySelector('.match-title');
@@ -21,21 +21,22 @@ function stop(heading, text) {
   lede.textContent = text;
 }
 
-async function loadRoster(keyB64) {
+async function loadRoster(secret) {
   const res = await fetch('roster.enc', { cache: 'no-store' });
   if (!res.ok) return null;
   const blob = fromB64((await res.text()).trim());
-  const key = await crypto.subtle.importKey('raw', fromB64(keyB64), 'AES-GCM', false, ['decrypt']);
+  const raw = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(secret));
+  const key = await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['decrypt']);
   const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: blob.slice(0, 12) }, key, blob.slice(12));
   return JSON.parse(new TextDecoder().decode(plain));
 }
 
 async function start() {
-  const [keyB64, token] = location.hash.slice(1).split('.');
-  if (!keyB64 || !token) return stop('Use your personal link', 'This page opens from the link in your email from the Draper Fellowship team.');
+  const [secret, token] = location.hash.slice(1).split('.');
+  if (!secret || !token) return stop('Use your personal link', 'This page opens from the link in your email from the Draper Fellowship team.');
 
   let roster;
-  try { roster = await loadRoster(keyB64); } catch (e) { roster = undefined; }
+  try { roster = await loadRoster(secret); } catch (e) { roster = undefined; }
   if (roster === null) return stop('Matching is not open yet', 'Check back after the speed-dating session.');
   if (!roster) return stop('This link is not valid', 'Please open the link exactly as it appears in your email.');
 
@@ -50,8 +51,9 @@ async function start() {
   let picks = [];
   try { picks = (JSON.parse(localStorage.getItem(storeKey)) || []).filter(id => byId.has(id)).slice(0, max); } catch (e) {}
 
-  title.textContent = `Hi ${self.name.split(' ')[0]}. Who do you want to build with?`;
+  title.textContent = 'Who do you want to build with?';
   lede.textContent = `Rank up to ${max} people, best fit first. You can change your ranking and submit again; only your latest submission counts.`;
+  document.querySelector('.match-as').textContent = `Submitting as ${self.name}. Not you? Use the link from your own email.`;
   grid.hidden = false;
   document.querySelector('.how').hidden = false;
 
