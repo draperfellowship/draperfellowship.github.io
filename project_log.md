@@ -289,3 +289,10 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - Symptom: a link I opened for the user with `open "$(... | cut ...)"` showed "This link is not valid".
 - Cause: `links.csv` had CRLF line endings (Python csv default); the shell extraction kept the trailing CR, which `open` percent-encoded as `%0D` onto the personal code. The stored links were correct (30/30 in the browser check, because Chrome strips raw CR from URLs).
 - Fix: page decodes and trims the fragment before splitting; `make_links.py` writes LF line endings. Tokens and secret unchanged, so links are the same.
+
+## 2026-10-04: Matching: minimum 5, no maximum (PR #33)
+
+- User request: at least 5 picks, as many as they like, with a line recommending they rank everyone they would consider. Removed "Not you? Use the link from your own email."; "Submitting as NAME." stays.
+- Roster field `k` renamed `min`. Page blocks submit under 5 and says how many more are needed.
+- `match.py`: lists are no longer truncated; unranked now scores as rank N (group size, 30 here) instead of 7, so any ranked position beats being left off. Tested on 30 people with list lengths 5 to 29.
+- Note: on fully random test rankings the optimal matching still flagged 3 "would rather be together" pairs; real post-event rankings are far more mutual, and the script lists any for manual review.

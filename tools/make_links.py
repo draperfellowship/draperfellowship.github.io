@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build personal matching links from an attendee list.
 
-    python tools/make_links.py private/attendees.csv [--k 5] [--base https://draperfellowship.github.io/match/]
+    python tools/make_links.py private/attendees.csv [--min 5] [--base https://draperfellowship.github.io/match/]
 
 Input CSV needs `name` and `email` columns. Writes:
   docs/match/roster.enc   encrypted roster the page decrypts (safe to commit)
@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 ap = argparse.ArgumentParser()
 ap.add_argument("attendees")
-ap.add_argument("--k", type=int, default=5)
+ap.add_argument("--min", type=int, default=5, help="fewest people each attendee must rank")
 ap.add_argument("--base", default="https://draperfellowship.github.io/match/")
 args = ap.parse_args()
 
@@ -44,7 +44,7 @@ for row in csv.DictReader(open(args.attendees)):
     people.append({"id": pid, "name": name, "email": email, "token": token})
 
 roster = {
-    "k": args.k,
+    "min": args.min,
     "people": [{"id": p["id"], "name": p["name"]} for p in people],
     "who": {hashlib.sha256(p["token"].encode()).hexdigest(): p["id"] for p in people},
 }

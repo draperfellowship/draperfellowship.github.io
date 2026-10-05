@@ -45,16 +45,16 @@ async function start() {
   const self = roster.people.find(p => p.id === me);
   if (!self) return stop('This link is not valid', 'Please open the link exactly as it appears in your email.');
 
-  const max = roster.k;
+  const min = Math.min(roster.min, roster.people.length - 1);
   const others = roster.people.filter(p => p.id !== me).sort((a, b) => a.name.localeCompare(b.name));
   const byId = new Map(others.map(p => [p.id, p]));
   const storeKey = 'matchPicks:' + me;
   let picks = [];
-  try { picks = (JSON.parse(localStorage.getItem(storeKey)) || []).filter(id => byId.has(id)).slice(0, max); } catch (e) {}
+  try { picks = (JSON.parse(localStorage.getItem(storeKey)) || []).filter(id => byId.has(id)); } catch (e) {}
 
   title.textContent = 'Who do you want to build with?';
-  lede.textContent = `Rank up to ${max} people, best fit first. You can change your ranking and submit again; only your latest submission counts.`;
-  document.querySelector('.match-as').textContent = `Submitting as ${self.name}. Not you? Use the link from your own email.`;
+  lede.textContent = `Rank at least ${min} people, best fit first. We recommend ranking everyone you would consider building with. You can change your ranking and submit again; only your latest submission counts.`;
+  document.querySelector('.match-as').textContent = `Submitting as ${self.name}.`;
   grid.hidden = false;
   document.querySelector('.how').hidden = false;
 
@@ -82,11 +82,11 @@ async function start() {
     peopleEl.replaceChildren(...others.filter(p => !picks.includes(p.id) && p.name.toLowerCase().includes(q)).map(p => {
       const li = document.createElement('li');
       const name = Object.assign(document.createElement('span'), { className: 'name', textContent: p.name });
-      li.append(name, button(`Add ${p.name}`, '+', () => { picks.push(p.id); render(); }, picks.length >= max));
+      li.append(name, button(`Add ${p.name}`, '+', () => { picks.push(p.id); render(); }));
       return li;
     }));
-    submit.disabled = picks.length === 0;
-    msg.textContent = '';
+    submit.disabled = picks.length < min;
+    msg.textContent = picks.length < min ? `Add ${min - picks.length} more to submit.` : '';
     msg.classList.remove('is-error');
   }
 
