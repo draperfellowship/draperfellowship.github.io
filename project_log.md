@@ -301,3 +301,10 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 
 - `tools/match.py` now writes `private/matching_results.xlsx` (sheets: Recommended pairings; All pair scores, every possible pair sorted best first with a Recommended flag; Notes with non-submitters, pairs flagged for review, and the method). It only reads and writes local files; nothing is sent anywhere.
 - Hidden test user (id 0, "Test User"): link in `private/test_link.txt`. It can submit like anyone, is never shown in other people's lists (`hidden` flag in the roster), is left out of `links.csv`, and is ignored by `match.py`.
+
+## 2026-10-04: Algorithm changed to mutual-first (PR #35)
+
+- User rejected the group-total tradeoff: "mutual preference should essentially always be favored". New method in `tools/match.py`: among pairs where both people ranked each other, lock the best score, remove both, repeat (greedy; ties at one score resolved by maximum-cardinality matching so the most tied pairs survive). Only people with no mutual option left are paired by minimum-weight matching. Score formula unchanged.
+- Accepted cost: the last people matched can get weaker pairings than a group-optimal method would give them. Mitigated by the minimum of 5 and the advice to rank everyone they would consider.
+- Verified on random rankings for 30 people: every locked mutual pair was the best available at the time; none left unmatched; everyone placed once. The rank-based "would both prefer each other" flag can still fire (one person can be claimed by someone who ranked them higher) and stays in the Notes sheet.
+- Page explainer text updated to match.
