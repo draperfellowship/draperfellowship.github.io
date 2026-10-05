@@ -325,3 +325,8 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 
 - `docs/match/how.html`: public explainer with the scoring table, the three-step pairing loop, the shared-person tie rule in one sentence, and what it means for the ranker. Loops and odd counts deliberately left out per the user. Linked from the ranking page (opens in a new tab so unsaved picks are not lost); replaces the inline `<details>` blurb.
 - Caught before shipping: I had written that a longer list "cannot hurt your top choices". False under mutual-first: adding an 8th choice who ranked you 1st (score 65) can beat you with your 2nd choice who ranked you 8th (68). Replaced with "anyone on it is someone you could end up paired with".
+
+## 2026-10-04: Explainer page edits (PR #39)
+
+- Per the user: examples cut to two (1st+1st = 2, 2nd+4th = 20); "Squaring rewards balance" and the closing "close this tab" line removed.
+- User asked to say that other people's rankings of other people never affect you. That is true of the score but not of the outcome (someone you ranked can be matched first with a person they score better with), so the page states both: the score depends only on the two of you; others matter only through who is still available.
