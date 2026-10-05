@@ -1,6 +1,7 @@
 .match { padding-block: clamp(36px, 6vw, 72px) 96px; }
 .match-title { font-size: clamp(2rem, 5vw, 3.25rem); text-align: left; margin: 0; max-width: 24ch; }
 .match-lede { max-width: 60ch; margin-top: 16px; color: #3d3731; }
+.match-as { margin-top: 8px; font-size: 0.9375rem; color: var(--muted); }
 
 .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; align-items: start; }
 .match-grid[hidden], .how[hidden] { display: none; }

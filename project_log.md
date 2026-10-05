@@ -277,3 +277,9 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - All 30 links checked in a headless browser: each greets the right first name and lists the other 29.
 - **No emails were sent; the user explicitly said not to.** Sending the links is the user's step.
 - 30 is even, so no trio unless someone drops out.
+
+## 2026-10-04: Shorter links, no greeting (PR #31)
+
+- User asked why links were long: the first 43 characters were the shared 256-bit event key. Now the link carries an 11-character shared secret (AES key = its SHA-256) and an 8-character personal code: 63 characters total, down from 108. All links regenerated; none had been sent.
+- Greeting removed at the user's request; heading is the same for everyone. A small "Submitting as NAME" line remains so a forwarded or mixed-up link is noticed.
+- Email automation: discussed, not built; user said not to send anything.
