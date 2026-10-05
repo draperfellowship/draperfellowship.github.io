@@ -45,8 +45,8 @@ async function start() {
   const self = roster.people.find(p => p.id === me);
   if (!self) return stop('This link is not valid', 'Please open the link exactly as it appears in your email.');
 
-  const min = Math.min(roster.min, roster.people.length - 1);
-  const others = roster.people.filter(p => p.id !== me).sort((a, b) => a.name.localeCompare(b.name));
+  const others = roster.people.filter(p => p.id !== me && !p.hidden).sort((a, b) => a.name.localeCompare(b.name));
+  const min = Math.min(roster.min, others.length);
   const byId = new Map(others.map(p => [p.id, p]));
   const storeKey = 'matchPicks:' + me;
   let picks = [];
