@@ -369,3 +369,7 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 ## 2026-10-07: Rudy Pathak removed from the pool
 
 - User request. Removed from `private/attendees.csv`, roster regenerated: 23 entries. Shared link unchanged.
+
+## 2026-10-07: Minimum ranking lowered to 2
+
+- User request. `make_links.py` default `--min` is now 2; roster regenerated (the minimum lives in `roster.enc`).
