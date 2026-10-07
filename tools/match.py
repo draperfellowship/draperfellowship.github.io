@@ -3,7 +3,8 @@
 
     python tools/match.py private/responses.csv
 
-responses.csv is the Google Sheet export (Timestamp, Response). Each Response is JSON {"t": token, "c": [ids]}.
+responses.csv is the Google Sheet export (Timestamp, Name, Ranking, Token). Ranking is one "1. Name" per line;
+the Token must match a roster entry, so rows not sent from a personal link are dropped.
 Needs private/roster.csv from make_links.py. Writes private/matching_results.xlsx with three sheets:
 recommended pairings, every possible pair with its score, and notes.
 
@@ -18,7 +19,7 @@ one that does least harm to whoever is left out. If several are exactly equal, i
 Whoever remains has no mutual option left; they are paired so the sum of their scores is as small as possible
 (minimum-weight matching). With an odd count, the person left over joins the pair where they add the least.
 """
-import argparse, csv, json
+import argparse, csv, re
 import networkx as nx
 from openpyxl import Workbook
 from openpyxl.styles import Font
@@ -35,17 +36,16 @@ name = {int(r["id"]): r["name"] for r in roster if int(r["id"]) > 0}  # id 0 is 
 ids = sorted(name)
 
 # latest valid submission per person; rows are in time order
-prefs, bad = {}, 0
-for row in csv.reader(open(args.responses)):
-    try:
-        d = json.loads(row[-1]); me = by_token[d["t"]]
-    except (ValueError, KeyError, IndexError, TypeError):
-        bad += 1; continue
+by_name = {n: i for i, n in name.items()}
+prefs = {}
+for row in csv.DictReader(open(args.responses)):
+    me = by_token.get((row.get("Token") or "").strip())
     if me not in name:
         continue
     seen, clean = set(), []
-    for c in d.get("c", []):
-        if isinstance(c, int) and c in name and c != me and c not in seen:
+    for line in (row.get("Ranking") or "").splitlines():
+        c = by_name.get(re.sub(r"^\s*\d+\.\s*", "", line).strip())
+        if c is not None and c != me and c not in seen:
             seen.add(c); clean.append(c)
     prefs[me] = clean
 
