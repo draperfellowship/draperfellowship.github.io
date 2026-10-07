@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the encrypted roster and the shared matching link from an attendee list.
 
-    python tools/make_links.py private/attendees.csv [--min 5] [--base https://draperfellowship.github.io/match/]
+    python tools/make_links.py private/attendees.csv [--min 2] [--base https://draperfellowship.github.io/match/]
 
 Input CSV needs `name` and `email` columns (names must be unique). With --teams, a CSV with `members`
 (attendee names separated by ";") and `open` (yes/no): closed teams are left out entirely; an open team becomes
@@ -17,7 +17,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 ap = argparse.ArgumentParser()
 ap.add_argument("attendees")
-ap.add_argument("--min", type=int, default=5, help="fewest people each attendee must rank")
+ap.add_argument("--min", type=int, default=2, help="fewest people each attendee must rank")
 ap.add_argument("--teams", help="CSV of existing teams: members (names separated by ';'), open (yes/no)")
 ap.add_argument("--base", default="https://draperfellowship.github.io/match/")
 args = ap.parse_args()
