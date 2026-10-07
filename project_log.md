@@ -337,3 +337,10 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - Now in the landing page's language: hairline rules and type only. Ranking page: one heavy rule under the header, small-caps column labels, large condensed rank numerals, numbered empty slots up to the minimum, borderless controls, underlined search, names as full-row buttons in two columns with an "Add" hint on hover, left column sticky on desktop. Explainer: label-left sections (01 Scoring, 02 Pairing, 03 For you), the two examples as large numerals, steps and bullets as ruled lines.
 - Behavior unchanged; the saved message is now "Saved. N people ranked." Verified flow and no horizontal overflow at 1280 and 390.
 - Hook note: the branch-push guard scans the whole command text, so a PR body or log line that mentions the default branch's name after a push trips it. Keep the push in its own command.
+
+## 2026-10-05: Rankings Form moved to vincewu8@stanford.edu
+
+- The user asked to move matching off their old account. Google cannot transfer ownership from a personal account to a Workspace account, so the Form and Sheet were recreated in vincewu8@stanford.edu via Chrome (no links had been sent, so nothing to migrate).
+- Form "Draper Fellowship cofounder rankings": https://docs.google.com/forms/d/1Lncnu2XUTIjwCzEMHOYWnuFI1td203GGb_JxCpeD5Ts/edit (public ID `1FAIpQLSdGA4dO_j3Y0AWJihc_unQM70qxaTAcizCD7KQUwDnDomtmdw`, entry `1226335431`). One Short-answer question "Response"; responders "Anyone with the link" (not restricted to Stanford); no email collection.
+- Sheet "Draper Fellowship cofounder rankings (Responses)": https://docs.google.com/spreadsheets/d/1BW9PHp5rY5Otozi7iLgKAbxXeMhtBsVjHamvFZ3Nmrc/edit. Same columns as before (Timestamp, Response), so `match.py` is unchanged. Row 2 is a signed-out curl test with token `setup-test`; `match.py` drops it.
+- `docs/match/index.html` `data-form` / `data-entry` updated. The old Form and Sheet in the old account are unused; the user can delete them.
