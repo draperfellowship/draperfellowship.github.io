@@ -55,7 +55,6 @@ async function start() {
   lede.textContent = `Rank at least ${min} people, best fit first. We recommend ranking everyone you would consider building with. You can change your ranking and submit again; only your latest submission counts.`;
   document.querySelector('.match-as').textContent = `Submitting as ${self.name}.`;
   grid.hidden = false;
-  document.querySelector('.how').hidden = false;
 
   const button = (label, text, onClick, disabled) => {
     const b = document.createElement('button');
