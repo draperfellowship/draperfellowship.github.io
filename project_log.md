@@ -365,3 +365,7 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
   - Pool: 24 entries (30 people minus 3 removed, 5 merged into 2). Madhuhaas Gottimukkala did not fill the team form and is a solo entry.
 - Tested locally in Chrome: picker lists 24 entries, search works, a team entry opens its page, does not list itself, posts Name / Ranking / device to the right entries (fetch stubbed, nothing sent), "Not you?" returns to the picker, test link, no link, wrong secret and unknown id all behave. Parser tested on synthetic rows: 30 read, a second-device row flagged.
 - Explainer link removed here as well (PR #43 superseded).
+
+## 2026-10-07: Rudy Pathak removed from the pool
+
+- User request. Removed from `private/attendees.csv`, roster regenerated: 23 entries. Shared link unchanged.
