@@ -14,8 +14,8 @@
   padding-top: 26px;
   border-top: 2px solid var(--ink);
 }
-.match-grid[hidden], .how[hidden] { display: none; }
-.match-grid h2 {
+.match-grid[hidden], .match-who[hidden], .how[hidden] { display: none; }
+.match-grid h2, .match-who h2 {
   margin-bottom: 6px;
   font-family: var(--sans);
   font-size: 0.75rem;
@@ -25,6 +25,8 @@
   color: var(--muted);
 }
 .mine { position: sticky; top: 88px; }
+.match-who { max-width: 640px; margin-top: 52px; padding-top: 26px; border-top: 2px solid var(--ink); }
+.match-as a { color: var(--accent); text-underline-offset: 4px; }
 
 /* your ranking */
 .picks li { display: flex; align-items: center; gap: 14px; min-height: 58px; border-bottom: 1px solid var(--line); }
@@ -56,7 +58,7 @@
 .match-msg.is-error { color: var(--red); font-weight: 500; }
 
 /* everyone */
-#search {
+.search {
   width: 100%;
   padding: 10px 0 12px;
   border: 0;
@@ -68,8 +70,8 @@
   font-size: 1.125rem;
   outline: none;
 }
-#search::placeholder { color: #a39a8e; }
-#search:focus { border-bottom-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
+.search::placeholder { color: #a39a8e; }
+.search:focus { border-bottom-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
 
 .people { columns: 2; column-gap: 44px; margin-top: 6px; }
 .people li { break-inside: avoid; }

@@ -353,3 +353,15 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 - Removed the "Choose from the list" hint in the first empty slot (user request); the numbered empty slots stay.
 - Gotcha: the Claude-in-Chrome tab is `visibilityState: hidden`, so the Google Forms question-type menu never finishes its animation and clicks on it do not register. The user changed Ranking to Paragraph by hand.
 - The algorithm is still pairs. Teams of 3 with two pre-formed pairs is planned but not started; nothing runs on submission, `match.py` is run by hand.
+
+## 2026-10-07: One shared link with a name picker; existing teams from the team-building form
+
+- User asked to replace personal links with a landing page: one shared link, a searchable list of names, pick yours, then rank. Personal links retired (none had been sent). Link format `/match/#<event secret>` for the picker, `/match/#<event secret>/<id>` for a person's ranking page ("Not you?" goes back). The roster stays encrypted with the event secret, so names are still not readable from the public site.
+- Identity: user chose "flag only". Nothing proves who submits. Each browser stores a random device id (localStorage) and sends it in the Form's third question (still titled "Token" in the Form; entry `751092105`). `match.py` identifies submitters by Name and lists any name submitted from more than one device in the Notes sheet.
+- `make_links.py` now writes `private/link.txt` (the shared link) and `private/test_link.txt` (`#<secret>/0`, the hidden test user); `private/links.csv` and tokens are gone. New `--teams private/teams.csv` (`members` separated by ";", `open` yes/no): closed teams are removed from the pool; an open team becomes one entry ("A & B") that submits one ranking and is ranked as a unit.
+- Teams, from the user's "Draper Fellows Team-Building (Responses)" export (moved from the repo root to `private/team_building.csv`; it holds personal data):
+  - Closed, removed: Patrick Flanagan & Joshua Barsoian; Mudit Baid (team with Ishaan Shah, who is not on the roster).
+  - Open, merged: Ameya Kohli & Sahasra Yellepeddi; Saawan Duvvuri, Sophie Zeng & Prisha Shroff (Saawan and Sophie each listed a team of 2; Prisha listed a team of 3 with both. Included Prisha pending the user's confirmation).
+  - Pool: 24 entries (30 people minus 3 removed, 5 merged into 2). Madhuhaas Gottimukkala did not fill the team form and is a solo entry.
+- Tested locally in Chrome: picker lists 24 entries, search works, a team entry opens its page, does not list itself, posts Name / Ranking / device to the right entries (fetch stubbed, nothing sent), "Not you?" returns to the picker, test link, no link, wrong secret and unknown id all behave. Parser tested on synthetic rows: 30 read, a second-device row flagged.
+- Explainer link removed here as well (PR #43 superseded).
