@@ -80,7 +80,7 @@ async function start() {
     for (let i = picks.length; i < min; i++) {
       const li = Object.assign(document.createElement('li'), { className: 'slot' });
       li.append(Object.assign(document.createElement('span'), { className: 'rank', textContent: i + 1 }),
-        Object.assign(document.createElement('span'), { className: 'name', textContent: i === picks.length ? 'Choose from the list' : '' }));
+        Object.assign(document.createElement('span'), { className: 'name', textContent: '' }));
       picksEl.append(li);
     }
     const q = search.value.trim().toLowerCase();
@@ -102,7 +102,12 @@ async function start() {
 
   submit.addEventListener('click', async () => {
     submit.disabled = true;
-    const body = new URLSearchParams({ [`entry.${main.dataset.entry}`]: JSON.stringify({ t: token, c: picks }) });
+    // readable in the Sheet; the token proves the row came from this person's link
+    const body = new URLSearchParams({
+      [`entry.${main.dataset.nameEntry}`]: self.name,
+      [`entry.${main.dataset.rankingEntry}`]: picks.map((id, i) => `${i + 1}. ${byId.get(id).name}`).join('\n'),
+      [`entry.${main.dataset.tokenEntry}`]: token,
+    });
     try {
       // no-cors: the response is opaque, so a completed request is treated as saved
       await fetch(`https://docs.google.com/forms/d/e/${main.dataset.form}/formResponse`, { method: 'POST', mode: 'no-cors', body });
