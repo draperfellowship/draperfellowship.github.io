@@ -3,8 +3,9 @@
 
     python tools/match.py private/responses.csv
 
-responses.csv is the Google Sheet export (Timestamp, Name, Ranking, Token). Ranking is one "1. Name" per line;
-the Token must match a roster entry, so rows not sent from a personal link are dropped.
+responses.csv is the Google Sheet export (Timestamp, Name, Ranking, Device). Ranking is one "1. Name" per line.
+People pick their own name on the page, so nothing proves who submitted; a name submitted from more than one
+device is listed in the Notes sheet for a check by hand.
 Needs private/roster.csv from make_links.py. Writes private/matching_results.xlsx with three sheets:
 recommended pairings, every possible pair with its score, and notes.
 
@@ -31,17 +32,17 @@ ap.add_argument("--out", default="private/matching_results.xlsx")
 args = ap.parse_args()
 
 roster = list(csv.DictReader(open("private/roster.csv")))
-by_token = {r["token"]: int(r["id"]) for r in roster}
 name = {int(r["id"]): r["name"] for r in roster if int(r["id"]) > 0}  # id 0 is the hidden test user
 ids = sorted(name)
 
 # latest valid submission per person; rows are in time order
 by_name = {n: i for i, n in name.items()}
-prefs = {}
+prefs, devices = {}, {}
 for row in csv.DictReader(open(args.responses)):
-    me = by_token.get((row.get("Token") or "").strip())
-    if me not in name:
+    me = by_name.get((row.get("Name") or "").strip())
+    if me is None:
         continue
+    devices.setdefault(me, set()).add((row.get("Device") or row.get("Token") or "").strip())
     seen, clean = set(), []
     for line in (row.get("Ranking") or "").splitlines():
         c = by_name.get(re.sub(r"^\s*\d+\.\s*", "", line).strip())
@@ -109,6 +110,7 @@ blocking = [(a, b) for i, a in enumerate(ids) for b in ids[i + 1:]
 groups.sort(key=group_cost)
 together = {frozenset((a, b)) for g in groups for i, a in enumerate(g) for b in g[i + 1:]}
 missing = [name[p] for p in ids if p not in prefs]
+shared = [name[p] for p in ids if len(devices.get(p, ())) > 1]
 show = lambda w: ", ".join(name[a] + " & " + name[b] for a, b in w)
 coin = [(s_, best) for s_, ways, best in loops if len(best) > 1]
 settled = [(s_, ways, best) for s_, ways, best in loops if len(best) == 1]
@@ -140,6 +142,7 @@ sheet(wb.create_sheet(), "All pair scores",
 notes = [["People", len(ids)], ["Submitted", len(prefs)], ["Mutual pairs (both ranked each other)", len(locked)],
          ["Total score of recommended pairings", sum(group_cost(g) for g in groups)],
          ["Did not submit", ", ".join(missing) or "none"],
+         ["Submitted from more than one device (check the person really submitted; the latest counts)", ", ".join(shared) or "none"],
          ["Pairs who would both prefer each other over their assigned partner (review by hand)",
           "; ".join(f"{name[a]} & {name[b]}" for a, b in blocking) or "none"],
          ["Loops settled by least harm to whoever was left out (for information)",
@@ -152,4 +155,4 @@ sheet(wb.create_sheet(), "Notes", ["Item", "Value"], notes, [70, 90])
 wb.save(args.out)
 
 print(f"wrote {args.out}: {len(groups)} groups, {len(allp)} possible pairs scored")
-print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual pairs locked, {len(blocking)} pairs flagged for review, {len(settled)} loops settled by least harm, {len(coin)} coin flips needed, {len(missing)} did not submit")
+print(f"{len(ids)} people, {len(prefs)} submitted, {len(locked)} mutual pairs locked, {len(blocking)} pairs flagged for review, {len(settled)} loops settled by least harm, {len(coin)} coin flips needed, {len(missing)} did not submit, {len(shared)} submitted from more than one device")

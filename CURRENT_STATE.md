@@ -13,11 +13,11 @@ Single-page static site for The Draper Fellowship, a fall-quarter startup accele
 - ✅ `docs/main.js`: timeline road (SVG built at runtime: winding road through one checkpoint per date, driven stretch painted navy, car that follows scroll, checkered flags that light up, finish line at pitch day), fade-up reveals, count-ups, marquee. Page is complete without JS; autonomous motion is off under `prefers-reduced-motion`.
 - ✅ Verified at 1280x900 and 390x800 by a scripted scroll (CDP): flags 0/6 to 6/6, road fully painted at bottom, no horizontal overflow.
 
-- ✅ `docs/match/` cofounder matching page (personal links, encrypted roster, rankings stored in the original Google Sheet owned by vincexxwu@gmail.com; rows show Name, Ranking (names) and Token) and `tools/make_links.py`, `tools/match.py`. Runbook in `project_log.md`.
+- ✅ `docs/match/` cofounder matching page (one shared link with a name picker, encrypted roster, existing open teams as single entries, rankings stored in the original Google Sheet owned by vincexxwu@gmail.com; rows show Name, Ranking (names) and Token) and `tools/make_links.py`, `tools/match.py`. Runbook in `project_log.md`.
 - ✅ Hero now shows the deadline-passed message instead of the countdown (since 2026-09-28).
 
 ## What's NOT in place
-- 🟡 Matching is open for 30 attendees (roster loaded 2026-10-04) but no links have been sent. `private/links.csv` has name, email, link. The user said not to send any emails; distribution is theirs.
+- 🟡 Matching roster: 24 entries (30 attendees; closed teams removed, open teams merged; `private/teams.csv`). One shared link in `private/link.txt`, not yet shared. The user said not to send any emails; distribution is theirs.
 - ❌ Custom domain, contact email, photos, social preview image.
 
 ## What's being worked on right now (and why)
