@@ -377,3 +377,7 @@ Purpose: after the Oct 7 speed-dating session, each attendee ranks who they want
 ## 2026-10-07: Louis Stumpf removed from the pool
 
 - User request. Removed from `private/attendees.csv`, roster regenerated: 22 entries. Shared link unchanged.
+
+## 2026-10-07: Kyle Roh removed from the pool
+
+- User request. Removed from `private/attendees.csv`, roster regenerated: 21 entries. Shared link unchanged.

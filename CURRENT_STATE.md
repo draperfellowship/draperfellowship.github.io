@@ -17,7 +17,7 @@ Single-page static site for The Draper Fellowship, a fall-quarter startup accele
 - ✅ Hero now shows the deadline-passed message instead of the countdown (since 2026-09-28).
 
 ## What's NOT in place
-- 🟡 Matching roster: 22 entries (30 attendees; Rudy Pathak and Louis Stumpf removed on request; closed teams removed, open teams merged; `private/teams.csv`). One shared link in `private/link.txt`, not yet shared. The user said not to send any emails; distribution is theirs.
+- 🟡 Matching roster: 21 entries (30 attendees; Rudy Pathak, Louis Stumpf and Kyle Roh removed on request; closed teams removed, open teams merged; `private/teams.csv`). One shared link in `private/link.txt`, not yet shared. The user said not to send any emails; distribution is theirs.
 - ❌ Custom domain, contact email, photos, social preview image.
 
 ## What's being worked on right now (and why)
